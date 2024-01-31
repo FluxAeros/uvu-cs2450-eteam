@@ -2,6 +2,7 @@ import Memory
 import LoadStore
 
 class Processor:
+    @staticmethod
     def process(memory):
         #step 1: ascertain size of program my analyizing memory.mainMemory
         #step 2: iterate through each line of the program and save it into an instruction variable

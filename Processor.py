@@ -1,8 +1,13 @@
-from . import Memory
-from . import LoadStore
+import Memory
+import LoadStore
 
 class Processor:
-    def process(instruction, memory):
+    def process(memory):
+        #step 1: ascertain size of program my analyizing memory.mainMemory
+        #step 2: iterate through each line of the program and save it into an instruction variable
+        #step 3: match case it to route the instruction to the correct function
+
+
         operationCode = int(str(instruction)[:2])
 
         match operationCode:

@@ -1,5 +1,5 @@
-from .Memory import Memory
-from .LoadStore import LoadStore
+from Memory import Memory
+from LoadStore import LoadStore
 import os
 
 def main():

@@ -1,4 +1,4 @@
-from .Memory import Memory
+from Memory import Memory
 
 class LoadStore:
     @staticmethod

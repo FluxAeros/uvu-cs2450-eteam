@@ -1,5 +1,5 @@
-import Memory
-import LoadStore
+from Memory import Memory
+from LoadStore import LoadStore
 
 class Processor:
     @staticmethod

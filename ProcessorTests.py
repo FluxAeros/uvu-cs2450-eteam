@@ -1,7 +1,6 @@
 import unittest
-from ..LoadStore import LoadStore
-from ..Memory import Memory
-from ..Processor import Processor
+from Memory import Memory
+from Processor import Processor
 
 class TestProcessorMethods(unittest.TestCase):
     def test_process(self):

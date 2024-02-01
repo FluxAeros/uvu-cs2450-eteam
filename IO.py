@@ -2,7 +2,7 @@ from Memory import Memory
 
 class IO:
     @staticmethod
-    def read(memory, index):
+    def Read(memory, index):
         if not(index >= 0 and index <= (len(memory.mainMemory)-1)):
             raise IndexError('Invalid memory location')
         
@@ -18,7 +18,7 @@ class IO:
         
 
     @staticmethod
-    def write(memory, index):
+    def Write(memory, index):
         if (index >= 0 and index <= (len(memory.mainMemory)-1)):
             print(str(memory.mainMemory[index]).zfill(4))
         else:

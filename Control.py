@@ -6,7 +6,7 @@ class Control:
         if (index >= 0 and index <= len(memory.mainMemory)):
             return index
         else:
-            raise 
+            raise IndexError('The memory location does not exist.')
 
     @staticmethod
     def BranchNeg(memory, index):

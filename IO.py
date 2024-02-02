@@ -12,7 +12,7 @@ class IO:
         except:
             raise SyntaxError("input must be a number")
         if (in_num < 0 or in_num > 9999):
-            raise SyntaxError("number is too large")
+            raise OverflowError("number is too large")
         
         memory.mainMemory[index] = in_num
         

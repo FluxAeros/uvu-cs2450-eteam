@@ -1,6 +1,6 @@
 import unittest
 from Memory import Memory
-from arithmetic import Arithmetic
+from Arithmetic import Arithmetic
 
 class testArithmetic(unittest.TestCase):
 

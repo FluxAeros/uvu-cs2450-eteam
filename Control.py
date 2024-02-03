@@ -30,4 +30,4 @@ class Control:
 
     @staticmethod
     def Halt():
-        pass
+        return 'halt'

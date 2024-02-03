@@ -68,7 +68,10 @@ class TestControlMethods(unittest.TestCase):
             Control.BranchZero(memory, index)
 
     def test_halt(self):
-        pass
+        result = Control.Halt()
+
+        self.assertEqual(result, 'halt')
+            
 
 if __name__ == '__main__':
     unittest.main()

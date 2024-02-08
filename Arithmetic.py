@@ -1,10 +1,20 @@
 from Memory import Memory
 
 class Arithmetic:
-    def add(memory, index):
+    def Add(memory, index):
         word = memory.mainMemory[index]
         memory.accumulator += word
 
-    def subtract(memory, index):
+    def Subtract(memory, index):
         word = memory.mainMemory[index]
         memory.accumulator -= word
+
+    def Multiply(memory, index):
+        word = memory.mainMemory[index]
+        memory.accumulator *= word
+
+    def Divide(memory, index):
+        word = memory.mainMemory[index]
+        accumulator = memory.accumulator
+        memory.accumulator = int(round(accumulator/word))
+

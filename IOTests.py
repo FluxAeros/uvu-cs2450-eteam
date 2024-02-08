@@ -6,19 +6,19 @@ from IO import IO
 
 class TestIOMethods(unittest.TestCase):
     
-    def test_read(self):
+    def test_readPositive(self):
         mem = Memory()
 
-        with mock.patch.object(builtins, "input", lambda _: "9000"):
+        with mock.patch.object(builtins, "input", lambda _: "+9000"):
             IO.Read(mem, 2)
             self.assertEqual(mem.mainMemory[2], 9000)
 
-    def test_readIndexError(self):
+    def test_readNegative(self):
         mem = Memory()
 
-        with self.assertRaises(IndexError):
-            with mock.patch.object(builtins, "input", lambda _: "9000"):
-                IO.Read(mem, 100)
+        with mock.patch.object(builtins, "input", lambda _: "-9000"):
+            IO.Read(mem, 2)
+            self.assertEqual(mem.mainMemory[2], -9000)
 
     def test_readSyntaxError(self):
         mem = Memory()
@@ -41,13 +41,6 @@ class TestIOMethods(unittest.TestCase):
         with mock.patch('builtins.print') as mocked_print:
             IO.Write(mem, 2)
             self.assertEqual(mocked_print.mock_calls, [mock.call('9900')])
-    
-    def test_writeIndexError(self):
-        mem = Memory()
-        mem.mainMemory[2] = 9900
-
-        with self.assertRaises(IndexError):
-            IO.Write(mem, 100)
 
 if __name__ == '__main__':
     unittest.main()

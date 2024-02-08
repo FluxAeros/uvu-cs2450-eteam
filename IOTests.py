@@ -34,13 +34,21 @@ class TestIOMethods(unittest.TestCase):
             with mock.patch.object(builtins, "input", lambda _: "10000"):
                 IO.Read(mem, 2)
 
-    def test_write(self):
+    def test_writePositive(self):
         mem = Memory()
         mem.mainMemory[2] = 9900
 
         with mock.patch('builtins.print') as mocked_print:
             IO.Write(mem, 2)
             self.assertEqual(mocked_print.mock_calls, [mock.call('9900')])
+
+    def test_writeNegative(self):
+        mem = Memory()
+        mem.mainMemory[2] = -9900
+
+        with mock.patch('builtins.print') as mocked_print:
+            IO.Write(mem, 2)
+            self.assertEqual(mocked_print.mock_calls, [mock.call('-9900')])
 
 if __name__ == '__main__':
     unittest.main()

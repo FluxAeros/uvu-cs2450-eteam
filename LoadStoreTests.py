@@ -2,7 +2,7 @@ import unittest
 from LoadStore import LoadStore
 from Memory import Memory
 
-class TestMemoryMethods(unittest.TestCase):
+class TestLoadStoreMethods(unittest.TestCase):
 
     def test_load(self):
         memory = Memory()

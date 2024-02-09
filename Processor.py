@@ -1,64 +1,65 @@
 from Memory import Memory
 from LoadStore import LoadStore
+from Control import Control
+from Arithmetic import Arithmetic
+from IO import IO
+
 
 class Processor:
     @staticmethod
     def process(memory):
-        #step 1: ascertain size of program my analyizing memory.mainMemory
-        #step 2: iterate through each line of the program and save it into an instruction variable
-        #step 3: match case it to route the instruction to the correct function
+        programCounter = 0
 
+        while programCounter <= (len(memory.mainMemory)-1):
 
-        operationCode = int(str(instruction)[:2])
+            instruction = memory.mainMemory[programCounter]
+            operationCode = int(str(instruction)[:2])
+            index = int(str(instruction)[-2:])
 
-        match operationCode:
-            case 10:
-                #read
-                pass
-            
-            case 11:
-                #write
-                pass
+            match operationCode:
+                case 10:
+                    IO.Read(memory, index)
+                    programCounter += 1
+                
+                case 11:
+                    IO.Write(memory, index)
+                    programCounter += 1
 
-            case 20:
-                index = int(str(instruction)[-2:])
-                LoadStore.Load(index, memory)
+                case 20:
+                    LoadStore.Load(memory, index)
+                    programCounter += 1
 
-            case 21:
-                index = int(str(instruction)[-2:])
-                LoadStore.Store(index, memory)
+                case 21:
+                    LoadStore.Store(memory, index)
+                    programCounter += 1
 
-            case 30:
-                #add
-                pass
+                case 30:
+                    Arithmetic.Add(memory, index)
+                    programCounter += 1
 
-            case 31:
-                #subtract
-                pass
+                case 31:
+                    Arithmetic.Subtract(memory, index)
+                    programCounter += 1
 
-            case 32:
-                #divide
-                pass
+                case 32:
+                    Arithmetic.Divide(memory, index)
+                    programCounter += 1
 
-            case 33:
-                #multiply
-                pass
+                case 33:
+                    Arithmetic.Multiply(memory, index)
+                    programCounter += 1
 
-            case 40:
-                #branch
-                pass
+                case 40:
+                    programCounter = Control.Branch(memory, index)
 
-            case 41:
-                #branchneg
-                pass
+                case 41:
+                    programCounter = Control.BranchNeg(memory, index)
 
-            case 42:
-                #branchzero
-                pass
+                case 42:
+                    programCounter = Control.BranchZero(memory, index)
 
-            case 43:
-                #halt
-                pass
+                case 43:
+                    break
 
-            case default:
-                raise Exception("Invalid instruction entered.")
+                case default:
+                    raise Exception("Invalid instruction entered.")

@@ -11,7 +11,7 @@ class Control:
     @staticmethod
     def BranchNeg(memory, index):
         if (index >= 0 and index <= (len(memory.mainMemory)-1)):
-            if (memory.accumulator < 0):
+            if (memory.getAccumulator() < 0):
                 return index
             else:
                 raise Exception('The accumulator is not negative.')
@@ -21,7 +21,7 @@ class Control:
     @staticmethod
     def BranchZero(memory, index):
         if (index >= 0 and index <= (len(memory.mainMemory)-1)):
-            if (memory.accumulator == 0):
+            if (memory.getAccumulator == 0):
                 return index
             else:
                 raise Exception('The accumulator is not zero.')

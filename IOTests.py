@@ -11,14 +11,14 @@ class TestIOMethods(unittest.TestCase):
 
         with mock.patch.object(builtins, "input", lambda _: "+9000"):
             IO.Read(mem, 2)
-            self.assertEqual(mem.mainMemory[2], 9000)
+            self.assertEqual(mem.getMainMemory(2), 9000)
 
     def test_readNegative(self):
         mem = Memory()
 
         with mock.patch.object(builtins, "input", lambda _: "-9000"):
             IO.Read(mem, 2)
-            self.assertEqual(mem.mainMemory[2], -9000)
+            self.assertEqual(mem.getMainMemory(2), -9000)
 
     def test_readSyntaxError(self):
         mem = Memory()
@@ -36,7 +36,7 @@ class TestIOMethods(unittest.TestCase):
 
     def test_writePositive(self):
         mem = Memory()
-        mem.mainMemory[2] = 9900
+        mem.setMainMemory(2, 9900)
 
         with mock.patch('builtins.print') as mocked_print:
             IO.Write(mem, 2)
@@ -44,7 +44,7 @@ class TestIOMethods(unittest.TestCase):
 
     def test_writeNegative(self):
         mem = Memory()
-        mem.mainMemory[2] = -9900
+        mem.setMainMemory(2, -9900)
 
         with mock.patch('builtins.print') as mocked_print:
             IO.Write(mem, 2)

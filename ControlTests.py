@@ -22,7 +22,7 @@ class TestControlMethods(unittest.TestCase):
     def test_branchNeg(self):
         memory = Memory()
         index = 9
-        memory.accumulator = -1024
+        memory.setAccumulator(-1024)
 
         returnedIndex = Control.BranchNeg(memory, index)
 
@@ -31,7 +31,7 @@ class TestControlMethods(unittest.TestCase):
     def test_branchNegPositiveAccumulator(self):
         memory = Memory()
         index = 11
-        memory.accumulator = 389
+        memory.setAccumulator(389)
 
         with self.assertRaises(Exception):
             Control.BranchNeg(memory, index)
@@ -39,7 +39,7 @@ class TestControlMethods(unittest.TestCase):
     def test_branchNegIndexError(self):
         memory = Memory()
         index = 100
-        memory.accumulator = -74
+        memory.setAccumulator(-74)
 
         with self.assertRaises(IndexError):
             Control.BranchNeg(memory, index)
@@ -55,7 +55,7 @@ class TestControlMethods(unittest.TestCase):
     def test_branchZeroNonzeroAccumulator(self):
         memory = Memory()
         index = 15
-        memory.accumulator = 500
+        memory.setAccumulator(500)
 
         with self.assertRaises(Exception):
             Control.BranchZero(memory, index)

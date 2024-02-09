@@ -12,7 +12,7 @@ class Processor:
 
         while programCounter <= (len(memory.mainMemory)-1):
 
-            instruction = memory.mainMemory[programCounter]
+            instruction = memory.getMainMemory(programCounter)
             operationCode = int(str(instruction)[:2])
             index = int(str(instruction)[-2:])
 

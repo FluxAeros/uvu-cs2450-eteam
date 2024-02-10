@@ -1,6 +1,6 @@
 from Memory import Memory
 from readFile import readFileToMemory
-from Processor import processor
+from Processor import Processor
 
 def main():
     memoryObj_1 = Memory()

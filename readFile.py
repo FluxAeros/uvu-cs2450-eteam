@@ -4,18 +4,24 @@ def readFileToMemory(memory_obj):
     if file:
         try:
             file = open(f'TestFiles/{file}', 'r')
+            index = 0
             for command in file:
-                memory_obj.mainMemory.append(command)
+                memory_obj.mainMemory[index] = command
+                index += 1
+            print(memory_obj.mainMemory)
         except FileNotFoundError:
             print("File not found")
     else:
         comm = ""
+        index = 0
         while comm != "STOP":
             comm = input("Enter your commands, Enter STOP to stop ")
             if comm == "STOP":
                 break
             else:
-                memory_obj.mainMemory.append(comm)
+                memory_obj.mainMemory[index] = comm
+                index += 1
+
 
 
 

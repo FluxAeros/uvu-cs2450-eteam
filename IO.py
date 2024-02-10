@@ -8,13 +8,13 @@ class IO:
             in_num = int(in_num)
             print(in_num)
         except:
-            raise SyntaxError("input must be a number")
+            raise SyntaxError("Input must be a number")
         if (in_num < -9999 or in_num > 9999):
-            raise OverflowError("number is too large")
+            raise OverflowError("Number is too large")
         
-        memory.mainMemory[index] = in_num
+        memory.setMainMemory(index, in_num)
         
 
     @staticmethod
     def Write(memory: Memory(), index: int):
-        print(str(memory.mainMemory[index]).zfill(4))
+        print(str(memory.getMainMemory(index)).zfill(4))

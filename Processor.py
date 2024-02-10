@@ -53,10 +53,18 @@ class Processor:
                     programCounter = Control.Branch(memory, index)
 
                 case 41:
-                    programCounter = Control.BranchNeg(memory, index)
+                    newIndex = Control.BranchNeg(memory, index)
+                    if (newIndex == 'noBranch'):
+                        programCounter += 1
+                    else:
+                        programCounter = newIndex
 
                 case 42:
-                    programCounter = Control.BranchZero(memory, index)
+                    newIndex = Control.BranchZero(memory, index)
+                    if (newIndex == 'noBranch'):
+                        programCounter += 1
+                    else:
+                        programCounter = newIndex
 
                 case 43:
                     break

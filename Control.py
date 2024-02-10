@@ -14,7 +14,7 @@ class Control:
             if (memory.getAccumulator() < 0):
                 return index
             else:
-                raise Exception('The accumulator is not negative.')
+                return 'noBranch'
         else:
             raise IndexError('The memory location does not exist.')
 
@@ -24,7 +24,7 @@ class Control:
             if (memory.getAccumulator == 0):
                 return index
             else:
-                raise Exception('The accumulator is not zero.')
+                return 'noBranch'
         else:
             raise IndexError('The memory location does not exist.')
 

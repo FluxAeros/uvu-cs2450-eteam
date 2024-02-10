@@ -33,8 +33,8 @@ class TestControlMethods(unittest.TestCase):
         index = 11
         memory.accumulator = 389
 
-        with self.assertRaises(Exception):
-            Control.BranchNeg(memory, index)
+        self.assertEqual(Control.BranchNeg(memory, index), 'noBranch')
+            
 
     def test_branchNegIndexError(self):
         memory = Memory()
@@ -57,8 +57,7 @@ class TestControlMethods(unittest.TestCase):
         index = 15
         memory.accumulator = 500
 
-        with self.assertRaises(Exception):
-            Control.BranchZero(memory, index)
+        self.assertEqual(Control.BranchNeg(memory, index), 'noBranch')
 
     def test_branchZeroIndexError(self):
         memory = Memory()

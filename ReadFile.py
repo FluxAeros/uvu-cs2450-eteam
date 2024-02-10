@@ -6,9 +6,8 @@ def readFileToMemory(memory_obj):
             file = open(f'TestFiles/{file}', 'r')
             index = 0
             for command in file:
-                memory_obj.mainMemory[index] = int(command)
+                memory_obj.setMainMemory(index, int(command))
                 index += 1
-            #print(memory_obj.mainMemory)
         except FileNotFoundError:
             print("File not found")
     else:
@@ -19,6 +18,6 @@ def readFileToMemory(memory_obj):
             if comm == "STOP":
                 break
             else:
-                memory_obj.mainMemory[index] = comm
+                memory_obj.setMainMemory(index, int(comm))
                 index += 1
 

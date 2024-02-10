@@ -8,7 +8,7 @@ def readFileToMemory(memory_obj):
             for command in file:
                 memory_obj.mainMemory[index] = int(command)
                 index += 1
-            print(memory_obj.mainMemory)
+            #print(memory_obj.mainMemory)
         except FileNotFoundError:
             print("File not found")
     else:

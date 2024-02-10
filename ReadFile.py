@@ -6,7 +6,7 @@ def readFileToMemory(memory_obj):
             file = open(f'TestFiles/{file}', 'r')
             index = 0
             for command in file:
-                memory_obj.mainMemory[index] = command
+                memory_obj.mainMemory[index] = int(command)
                 index += 1
             print(memory_obj.mainMemory)
         except FileNotFoundError:

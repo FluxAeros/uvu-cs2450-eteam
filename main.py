@@ -1,11 +1,11 @@
 from Memory import Memory
-from readFile import readFileToMemory
+from ReadFile import readFileToMemory
 from Processor import Processor
 
 def main():
     memoryObj_1 = Memory()
     readFileToMemory(memoryObj_1)
-    Processor.process(memoryObj_1.mainMemory)
+    Processor.process(memoryObj_1)
 
 
 

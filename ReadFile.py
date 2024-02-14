@@ -3,7 +3,7 @@ def readFileToMemory(memory_obj):
     file = input("Enter in the name of the file you would like to use: ")
     if file:
         try:
-            file = open(f'TestFiles/{file}', 'r')
+            file = open(f'RunCommands/{file}', 'r')
             index = 0
             for command in file:
                 memory_obj.setMainMemory(index, int(command))

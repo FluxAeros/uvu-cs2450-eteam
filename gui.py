@@ -23,8 +23,8 @@ class GUI:
         print("Input: {}".format(input))
 
     def get_file(self):
-        file_path = filedialog.askopenfilename(title="Select a File", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
-        self.file_name_label.config(text = f'Selected File: {file_path}')
+        file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+        self.file_name_label.config(text = f'Selected file: {file_path}')
 
     def run_file(self):
         print("Run file!")
@@ -43,7 +43,7 @@ class GUI:
         self.status_frame.columnconfigure(0, weight=1)
         self.status_frame.columnconfigure(0, weight=1)
         
-        self.file_name = 'file_name.txt'
+        self.file_name = 'Selected file: file_name.txt'
         self.file_name_label = tk.Label(self.status_frame, text=self.file_name, font=('Arial', 18))
         self.file_name_label.grid(row=0, column=0, sticky=tk.W+tk.E)
 

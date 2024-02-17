@@ -21,7 +21,7 @@ class Control:
     @staticmethod
     def BranchZero(memory, index):
         if (index >= 0 and index <= (len(memory.mainMemory)-1)):
-            if (memory.getAccumulator == 0):
+            if (memory.getAccumulator() == 0):
                 return index
             else:
                 return 'noBranch'

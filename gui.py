@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import filedialog
 
 class GUI:
 
@@ -22,7 +23,8 @@ class GUI:
         print("Input: {}".format(input))
 
     def get_file(self):
-        print("Open file!")
+        file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+        self.file_name_label.config(text = f'Selected file: {file_path}')
 
     def run_file(self):
         print("Run file!")
@@ -31,8 +33,6 @@ class GUI:
         self.menu_bar = tk.Menu(self.root)
 
         self.file_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.file_menu.add_command(label="Open File", command=self.get_file)
-        self.file_menu.add_separator()
         self.file_menu.add_command(label="Close", command=exit)
 
         self.menu_bar.add_cascade(menu=self.file_menu, label="File")
@@ -43,12 +43,15 @@ class GUI:
         self.status_frame.columnconfigure(0, weight=1)
         self.status_frame.columnconfigure(0, weight=1)
         
-        self.file_name = 'file_name.txt'
+        self.file_name = 'Selected file: file_name.txt'
         self.file_name_label = tk.Label(self.status_frame, text=self.file_name, font=('Arial', 18))
         self.file_name_label.grid(row=0, column=0, sticky=tk.W+tk.E)
 
+        self.open_file_button = tk.Button(self.status_frame, text="Select file", font=('Arial', 18), command=self.get_file)
+        self.open_file_button.grid(row=0, column=1, sticky=tk.W+tk.E)
+
         self.run_button = tk.Button(self.status_frame, text="run", font=('Arial', 18), command=self.run_file)
-        self.run_button.grid(row=0, column=1, sticky=tk.W+tk.E)
+        self.run_button.grid(row=0, column=2, sticky=tk.W+tk.E)
 
         self.status_frame.pack(fill='x', padx=10, pady=10)
 

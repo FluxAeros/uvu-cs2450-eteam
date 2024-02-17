@@ -6,50 +6,50 @@ class testArithmetic(unittest.TestCase):
 
     def test_add(self):
         memory = Memory()
-        memory.setMainMemory(5, 1234)
-        memory.setMainMemory(2, 1111)
+        memory.set_main_memory(5, 1234)
+        memory.set_main_memory(2, 1111)
 
-        Arithmetic.Add(memory, 5)
-        self.assertEqual(memory.getAccumulator(), 1234)
+        Arithmetic.add(memory, 5)
+        self.assertEqual(memory.get_accumulator(), 1234)
 
-        Arithmetic.Add(memory, 2)
-        self.assertEqual(memory.getAccumulator(), 2345)
+        Arithmetic.add(memory, 2)
+        self.assertEqual(memory.get_accumulator(), 2345)
 
     def test_subtract(self):
         memory = Memory()
-        memory.setMainMemory(5, 1111)
-        memory.setMainMemory(2, -3333)
+        memory.set_main_memory(5, 1111)
+        memory.set_main_memory(2, -3333)
 
-        Arithmetic.Subtract(memory, 5)
-        self.assertEqual(memory.getAccumulator(), -1111)
+        Arithmetic.subtract(memory, 5)
+        self.assertEqual(memory.get_accumulator(), -1111)
 
-        Arithmetic.Subtract(memory, 2)
-        self.assertEqual(memory.getAccumulator(), 2222)
+        Arithmetic.subtract(memory, 2)
+        self.assertEqual(memory.get_accumulator(), 2222)
 
     def test_multiply(self):
         memory = Memory()
-        memory.setMainMemory(5, 100)
-        memory.setMainMemory(2, -30)
+        memory.set_main_memory(5, 100)
+        memory.set_main_memory(2, -30)
         Arithmetic.Add(memory, 5)
 
-        Arithmetic.Multiply(memory, 2)
-        self.assertEqual(memory.getAccumulator(), -3000)
+        Arithmetic.multiply(memory, 2)
+        self.assertEqual(memory.get_accumulator(), -3000)
 
     def test_divide(self):
         memory = Memory()
-        memory.setMainMemory(5, 3000)
-        memory.setMainMemory(2, 33)
-        Arithmetic.Add(memory, 5)
+        memory.set_main_memory(5, 3000)
+        memory.set_main_memory(2, 33)
+        Arithmetic.add(memory, 5)
 
-        Arithmetic.Divide(memory, 2)
-        self.assertEqual(memory.getAccumulator(), 91)
+        Arithmetic.divide(memory, 2)
+        self.assertEqual(memory.get_accumulator(), 91)
 
     def test_arithmeticIndexError(self):
         memory = Memory()
 
         with self.assertRaises(IndexError):
-            Arithmetic.Add(memory, 100)
-            Arithmetic.Subtract(memory, 100)
+            Arithmetic.add(memory, 100)
+            Arithmetic.subtract(memory, 100)
 
 if __name__ == '__main__':
     unittest.main()

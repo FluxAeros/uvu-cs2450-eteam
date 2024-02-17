@@ -1,22 +1,22 @@
 class Memory:
     def __init__(self):
-        self.mainMemory = [0] * 100
+        self.main_memory = [0] * 100
         self.accumulator = 0
 
-    def getMainMemory(self, index):
+    def get_main_memory(self, index):
         try:
-            return self.mainMemory[index]
+            return self.main_memory[index]
         except IndexError:
             raise IndexError('The memory location does not exist.')
 
-    def setMainMemory(self, index, value):
+    def set_main_memory(self, index, value):
         try:
-            self.mainMemory[index] = value
+            self.main_memory[index] = value
         except IndexError:
             raise IndexError('The memory location does not exist.')
 
-    def getAccumulator(self):
+    def get_accumulator(self):
         return self.accumulator
 
-    def setAccumulator(self, value):
+    def set_accumulator(self, value):
         self.accumulator = value

@@ -8,66 +8,66 @@ class TestControlMethods(unittest.TestCase):
         memory = Memory()
         index = 12
 
-        returnedIndex = Control.Branch(memory, index)
+        returned_index = Control.branch(memory, index)
         
-        self.assertEqual(index, returnedIndex)
+        self.assertEqual(index, returned_index)
 
-    def test_branchIndexError(self):
+    def test_branch_index_error(self):
         memory = Memory()
         index = 100
         
         with self.assertRaises(IndexError):
-            Control.Branch(memory, index)
+            Control.branch(memory, index)
 
-    def test_branchNeg(self):
+    def test_branch_neg(self):
         memory = Memory()
         index = 9
-        memory.setAccumulator(-1024)
+        memory.set_accumulator(-1024)
 
-        returnedIndex = Control.BranchNeg(memory, index)
+        returned_index = Control.branch_neg(memory, index)
 
-        self.assertEqual(index, returnedIndex)
+        self.assertEqual(index, returned_index)
 
-    def test_branchNegPositiveAccumulator(self):
+    def test_branch_neg_positive_accumulator(self):
         memory = Memory()
         index = 11
-        memory.setAccumulator(389)
+        memory.set_accumulator(389)
 
-        self.assertEqual(Control.BranchNeg(memory, index), 'noBranch')
+        self.assertEqual(Control.branch_neg(memory, index), 'no_branch')
             
 
-    def test_branchNegIndexError(self):
+    def test_branch_neg_index_error(self):
         memory = Memory()
         index = 100
-        memory.setAccumulator(-74)
+        memory.set_accumulator(-74)
 
         with self.assertRaises(IndexError):
-            Control.BranchNeg(memory, index)
+            Control.branch_neg(memory, index)
 
-    def test_branchZero(self):
+    def test_branch_zero(self):
         memory = Memory()
         index = 4
         
-        returnedIndex = Control.BranchZero(memory, index)
+        returned_index = Control.branch_zero(memory, index)
 
-        self.assertEqual(index, returnedIndex)
+        self.assertEqual(index, returned_index)
 
-    def test_branchZeroNonzeroAccumulator(self):
+    def test_branch_zero_nonzero_accumulator(self):
         memory = Memory()
         index = 15
-        memory.setAccumulator(500)
+        memory.set_accumulator(500)
 
-        self.assertEqual(Control.BranchNeg(memory, index), 'noBranch')
+        self.assertEqual(Control.branch_zero(memory, index), 'no_branch')
 
-    def test_branchZeroIndexError(self):
+    def test_branch_zero_index_error(self):
         memory = Memory()
         index = 100
         
         with self.assertRaises(IndexError):
-            Control.BranchZero(memory, index)
+            Control.branch_zero(memory, index)
 
     def test_halt(self):
-        result = Control.Halt()
+        result = Control.halt()
 
         self.assertEqual(result, 'halt')
             

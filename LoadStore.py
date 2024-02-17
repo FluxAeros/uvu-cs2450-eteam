@@ -2,9 +2,9 @@ from Memory import Memory
 
 class LoadStore:
     @staticmethod
-    def Load(memory, index):
-        memory.setAccumulator(memory.getMainMemory(index))
+    def load(memory, index):
+        memory.set_accumulator(memory.get_main_memory(index))
 
     @staticmethod
-    def Store(memory, index):
-        memory.setMainMemory(index, memory.getAccumulator())
+    def store(memory, index):
+        memory.set_main_memory(index, memory.get_accumulator())

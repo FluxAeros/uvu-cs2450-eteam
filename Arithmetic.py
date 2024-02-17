@@ -1,19 +1,23 @@
 from Memory import Memory
 
 class Arithmetic:
-    def Add(memory, index):
-        word = memory.getMainMemory(index)
-        memory.setAccumulator(memory.getAccumulator() + word)
+    @staticmethod
+    def add(memory, index):
+        word = memory.get_main_memory(index)
+        memory.set_accumulator(memory.get_accumulator() + word)
 
-    def Subtract(memory, index):
-        word = memory.getMainMemory(index)
-        memory.setAccumulator(memory.getAccumulator() - word)
+    @staticmethod
+    def subtract(memory, index):
+        word = memory.get_main_memory(index)
+        memory.set_accumulator(memory.get_accumulator() - word)
 
-    def Multiply(memory, index):
-        word = memory.getMainMemory(index)
-        memory.setAccumulator(memory.getAccumulator() * word)
+    @staticmethod
+    def multiply(memory, index):
+        word = memory.get_main_memory(index)
+        memory.set_accumulator(memory.get_accumulator() * word)
 
-    def Divide(memory, index):
-        word = memory.getMainMemory(index)
-        memory.setAccumulator(int(round(memory.getAccumulator() / word)))
+    @staticmethod
+    def divide(memory, index):
+        word = memory.get_main_memory(index)
+        memory.set_accumulator(int(round(memory.get_accumulator() / word)))
 

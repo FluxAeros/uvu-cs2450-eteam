@@ -2,7 +2,7 @@ from Memory import Memory
 
 class IO:
     @staticmethod
-    def Read(memory: Memory(), index: int):
+    def read(memory, index):
         in_num = input("Enter number in format +/-0000:\n")
         try:
             in_num = int(in_num)
@@ -11,9 +11,9 @@ class IO:
         if (in_num < -9999 or in_num > 9999):
             raise OverflowError("Number is too large")
         
-        memory.setMainMemory(index, in_num)
+        memory.set_main_memory(index, in_num)
         
 
     @staticmethod
-    def Write(memory: Memory(), index: int):
-        print(str(memory.getMainMemory(index)).zfill(4))
+    def write(memory, index):
+        print(str(memory.get_main_memory(index)).zfill(4))

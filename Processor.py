@@ -8,63 +8,63 @@ from IO import IO
 class Processor:
     @staticmethod
     def process(memory):
-        programCounter = 0
+        program_counter = 0
 
-        while programCounter <= (len(memory.mainMemory)-1):
+        while program_counter <= (len(memory.mainMemory)-1):
 
-            instruction = memory.getMainMemory(programCounter)
+            instruction = memory.get_main_memory(program_counter)
             operationCode = int(str(instruction)[:2])
             index = int(str(instruction)[-2:])
 
             match operationCode:
                 case 10:
-                    IO.Read(memory, index)
-                    programCounter += 1
+                    IO.read(memory, index)
+                    program_counter += 1
                 
                 case 11:
-                    IO.Write(memory, index)
-                    programCounter += 1
+                    IO.write(memory, index)
+                    program_counter += 1
 
                 case 20:
-                    LoadStore.Load(memory, index)
-                    programCounter += 1
+                    LoadStore.load(memory, index)
+                    program_counter += 1
 
                 case 21:
-                    LoadStore.Store(memory, index)
-                    programCounter += 1
+                    LoadStore.store(memory, index)
+                    program_counter += 1
 
                 case 30:
-                    Arithmetic.Add(memory, index)
-                    programCounter += 1
+                    Arithmetic.add(memory, index)
+                    program_counter += 1
 
                 case 31:
-                    Arithmetic.Subtract(memory, index)
-                    programCounter += 1
+                    Arithmetic.subtract(memory, index)
+                    program_counter += 1
 
                 case 32:
-                    Arithmetic.Divide(memory, index)
-                    programCounter += 1
+                    Arithmetic.divide(memory, index)
+                    program_counter += 1
 
                 case 33:
-                    Arithmetic.Multiply(memory, index)
-                    programCounter += 1
+                    Arithmetic.multiply(memory, index)
+                    program_counter += 1
 
                 case 40:
-                    programCounter = Control.Branch(memory, index)
+                    program_counter = Control.branch(memory, index)
 
                 case 41:
-                    newIndex = Control.BranchNeg(memory, index)
-                    if (newIndex == 'noBranch'):
-                        programCounter += 1
+                    newIndex = Control.branch_neg(memory, index)
+                    if (newIndex == 'no_branch'):
+                        program_counter += 1
                     else:
-                        programCounter = newIndex
+                        program_counter = newIndex
 
                 case 42:
-                    newIndex = Control.BranchZero(memory, index)
-                    if (newIndex == 'noBranch'):
-                        programCounter += 1
+                    newIndex = Control.branch_zero(memory, index)
+                    if (newIndex == 'no_branch'):
+                        program_counter += 1
                     else:
-                        programCounter = newIndex
+                        program_counter = newIndex
 
                 case 43:
                     break

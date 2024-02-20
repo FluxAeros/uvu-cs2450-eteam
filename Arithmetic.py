@@ -1,23 +1,40 @@
 from Memory import Memory
 
 class Arithmetic:
-    @staticmethod
-    def add(memory, index):
-        word = memory.get_main_memory(index)
-        memory.set_accumulator(memory.get_accumulator() + word)
+    def overflow(ans):
+        #checking for overflow
+        length = len(str(ans))
+        #accounting for '-' sign
+        neg = False
+        if ans < 0:
+            neg = True
+        if length > 4:
+            overflow = length - 4
+            #converting ans to string for truncation
+            if neg:
+                return int(str(ans)[overflow:]) * -1
+            else:
+                return int(str(ans)[overflow:])
+        else:
+            return ans
 
-    @staticmethod
-    def subtract(memory, index):
-        word = memory.get_main_memory(index)
-        memory.set_accumulator(memory.get_accumulator() - word)
+    def Add(memory, index):
+        word = memory.getMainMemory(index)
+        ans = memory.getAccumulator() + word
+        memory.setAccumulator(Arithmetic.overflow(ans))
+        
 
-    @staticmethod
-    def multiply(memory, index):
-        word = memory.get_main_memory(index)
-        memory.set_accumulator(memory.get_accumulator() * word)
+    def Subtract(memory, index):
+        word = memory.getMainMemory(index)
+        ans = memory.getAccumulator() - word
+        memory.setAccumulator(Arithmetic.overflow(ans))
 
-    @staticmethod
-    def divide(memory, index):
-        word = memory.get_main_memory(index)
-        memory.set_accumulator(int(round(memory.get_accumulator() / word)))
+    def Multiply(memory, index):
+        word = memory.getMainMemory(index)
+        ans = memory.getAccumulator() * word
+        memory.setAccumulator(Arithmetic.overflow(ans))
 
+    def Divide(memory, index):
+        word = memory.getMainMemory(index)
+        ans = int(round(memory.getAccumulator() / word))
+        memory.setAccumulator(Arithmetic.overflow(ans))

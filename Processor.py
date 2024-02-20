@@ -1,8 +1,8 @@
-from Memory import Memory
-from LoadStore import LoadStore
-from Control import Control
-from Arithmetic import Arithmetic
-from IO import IO
+from memory import Memory
+from load_store import LoadStore
+from control import Control
+from arithmetic import Arithmetic
+from input_output import IO
 
 
 class Processor:

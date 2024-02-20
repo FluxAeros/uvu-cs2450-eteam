@@ -1,7 +1,7 @@
 import unittest
-from Control import Control
-from Memory import Memory
-from LoadStore import LoadStore
+from control import Control
+from memory import Memory
+from load_store import LoadStore
 
 class TestControlMethods(unittest.TestCase):
     def test_branch(self):

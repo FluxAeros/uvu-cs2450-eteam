@@ -1,6 +1,3 @@
-from Memory import Memory
-from ReadFile import readFileToMemory
-from Processor import Processor
 from gui import GUI
 
 def main():

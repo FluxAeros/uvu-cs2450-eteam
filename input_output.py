@@ -1,4 +1,4 @@
-from Memory import Memory
+from memory import Memory
 
 class IO:
     @staticmethod

@@ -1,6 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
+from memory import Memory
+from read_file import ReadFile
+from processor import Processor
+
 
 class GUI:
 
@@ -23,11 +27,13 @@ class GUI:
         print("Input: {}".format(input))
 
     def get_file(self):
-        file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
-        self.file_name_label.config(text = f'Selected file: {file_path}')
+        self.file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+        self.file_name_label.config(text = f'Selected file: {self.file_path}')
 
     def run_file(self):
-        print("Run file!")
+        memory = Memory()
+        ReadFile.read_file_to_memory(memory, self.file_path)
+        Processor.process(memory)
 
     def init_menu(self):
         self.menu_bar = tk.Menu(self.root)

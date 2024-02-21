@@ -1,6 +1,7 @@
 from memory import Memory
 
 class Arithmetic:
+    @staticmethod
     def overflow(ans):
         #checking for overflow
         length = len(str(ans))
@@ -19,22 +20,21 @@ class Arithmetic:
             return ans
 
     def Add(memory, index):
-        word = memory.getMainMemory(index)
-        ans = memory.getAccumulator() + word
-        memory.setAccumulator(Arithmetic.overflow(ans))
+        word = memory.get_main_memory(index)
+        ans = memory.get_accumulator() + word
+        memory.set_accumulator(Arithmetic.overflow(ans))
         
-
     def Subtract(memory, index):
-        word = memory.getMainMemory(index)
-        ans = memory.getAccumulator() - word
-        memory.setAccumulator(Arithmetic.overflow(ans))
+        word = memory.get_main_memory(index)
+        ans = memory.get_accumulator() - word
+        memory.set_accumulator(Arithmetic.overflow(ans))
 
     def Multiply(memory, index):
-        word = memory.getMainMemory(index)
-        ans = memory.getAccumulator() * word
-        memory.setAccumulator(Arithmetic.overflow(ans))
+        word = memory.get_main_memory(index)
+        ans = memory.get_accumulator() * word
+        memory.set_accumulator(Arithmetic.overflow(ans))
 
     def Divide(memory, index):
-        word = memory.getMainMemory(index)
-        ans = int(round(memory.getAccumulator() / word))
-        memory.setAccumulator(Arithmetic.overflow(ans))
+        word = memory.get_main_memory(index)
+        ans = int(round(memory.get_accumulator() / word))
+        memory.set_accumulator(Arithmetic.overflow(ans))

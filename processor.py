@@ -10,7 +10,7 @@ class Processor:
     def process(memory):
         program_counter = 0
 
-        while program_counter <= (len(memory.mainMemory)-1):
+        while program_counter <= (len(memory.main_memory)-1):
 
             instruction = memory.get_main_memory(program_counter)
             operationCode = int(str(instruction)[:2])

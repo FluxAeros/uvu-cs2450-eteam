@@ -1,8 +1,2 @@
-__pycache__/arithmetic.cpython-311.pyc
-__pycache__/control.cpython-311.pyc
-__pycache__/gui.cpython-311.pyc
-__pycache__/input_output.cpython-311.pyc
-__pycache__/load_store.cpython-311.pyc
-__pycache__/memory.cpython-311.pyc
-__pycache__/processor.cpython-311.pyc
-__pycache__/read_file.cpython-311.pyc
+__pycache__/
+*.pyc

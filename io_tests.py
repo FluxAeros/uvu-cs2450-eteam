@@ -1,8 +1,8 @@
 import unittest
 from unittest import mock
 import builtins
-from Memory import Memory
-from IO import IO
+from memory import Memory
+from input_output import IO
 
 class TestIOMethods(unittest.TestCase):
     

@@ -19,22 +19,22 @@ class Arithmetic:
         else:
             return ans
 
-    def Add(memory, index):
+    def add(memory, index):
         word = memory.get_main_memory(index)
         ans = memory.get_accumulator() + word
         memory.set_accumulator(Arithmetic.overflow(ans))
         
-    def Subtract(memory, index):
+    def subtract(memory, index):
         word = memory.get_main_memory(index)
         ans = memory.get_accumulator() - word
         memory.set_accumulator(Arithmetic.overflow(ans))
 
-    def Multiply(memory, index):
+    def multiply(memory, index):
         word = memory.get_main_memory(index)
         ans = memory.get_accumulator() * word
         memory.set_accumulator(Arithmetic.overflow(ans))
 
-    def Divide(memory, index):
+    def divide(memory, index):
         word = memory.get_main_memory(index)
         ans = int(round(memory.get_accumulator() / word))
         memory.set_accumulator(Arithmetic.overflow(ans))

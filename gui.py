@@ -4,9 +4,13 @@ from tkinter import filedialog
 from memory import Memory
 from read_file import ReadFile
 from processor import Processor
+from input_output import IO
+import threading
+
 
 
 class GUI:
+    user_input = ""
 
     def __init__(self):
         self.root = tk.Tk()
@@ -22,18 +26,23 @@ class GUI:
         self.root.mainloop()
     
     def get_input(self):
-        input = self.input_text.get('1.0', tk.END).strip()
-        self.input_text.delete('1.0', tk.END)
-        print("Input: {}".format(input))
+        GUI.user_input = self.input_text.get('1.0', tk.END).strip()  # Capture input
+        self.input_text.delete('1.0', tk.END)  # Clear the input field
+        print("Input: {}".format(GUI.user_input))
+        IO.input_ready_event.set()
 
     def get_file(self):
         self.file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
         self.file_name_label.config(text = f'Selected file: {self.file_path}')
 
     def run_file(self):
-        memory = Memory()
-        ReadFile.read_file_to_memory(memory, self.file_path)
-        Processor.process(memory)
+        def process_file():
+            memory = Memory()
+            ReadFile.read_file_to_memory(memory, self.file_path)
+            Processor.process(memory, self)
+
+        processing_thread = threading.Thread(target=process_file)
+        processing_thread.start()
 
     def init_menu(self):
         self.menu_bar = tk.Menu(self.root)

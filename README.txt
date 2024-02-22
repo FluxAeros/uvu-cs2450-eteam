@@ -1,21 +1,46 @@
-#UVsim#
+#UVSim: Basic Machine Language Simulator#
 
--- Project Description --
-UVSim is a software simulator designed for computer science students to explore machine language
-and computer architecture through BasicML program execution.
-It features a CPU, accumulator, and a 100-word main memory,
-supporting essential operations from I/O to arithmetic and control.
-This practical tool offers an invaluable learning experience,
-enabling students to gain a deeper understanding
-of computing fundamentals in a hands-on environment.
+---Project Description---
+UVSim is a versatile software simulator crafted specifically for computer science students to delve
+into the intricacies of machine language and computer architecture.
+By executing programs written in BasicML, UVSim emulates fundamental aspects of a computer system,
+including a CPU, an accumulator, and a main memory with a capacity of 100 words.
+It supports a broad spectrum of operations, ranging from input/output to arithmetic and control instructions.
+UVSim stands as an essential educational tool, offering students a tangible,
+hands-on experience that significantly deepens their understanding of the underlying principles of computing.
 
--- How to Run UVSim --
-* If running a file *
-1. Put the file you would like to run into the RunCommands folder
-2. Run `python3 main.py` in your terminal
-3. Input the name of your file in the terminal
+---Features---
+Simulated CPU and Accumulator: Mimics the core functions of a central processing unit and an accumulator for arithmetic operations.
+100-Word Main Memory: Offers a simplified model of computer memory, allowing for straightforward program execution.
+Support for BasicML: Executes Basic Machine Language (BasicML) instructions, covering I/O, arithmetic, and control operations.
+Interactive Command Execution: Users can input their machine language commands directly, facilitating an engaging learning process.
 
-* If running your own commands *
-1. Run `python3 main.py` in your terminal
-2. Press enter
-3. Input your commands as a 5 char command Ie "+1015"
+
+---Prerequisites---
+Python 3.x installed on your system.
+tkinter installed
+
+
+---Running UVSim---
+
+1. Prepare Your Program File:
+Create a text file containing your program written in BasicML.
+Save this file within a convenient location in your project's folder structure.
+
+2.Launch UVSim:
+Execute the main application file. This can typically be done by running python3 main.py in
+your terminal or command prompt, assuming you are in the UVSim project directory.
+
+3. Load Your Program File:
+Once UVSim opens, click on the "Select file" button.
+Navigate through the file dialog to find and select the program file you prepared in step 1.
+
+4. Execute the Program:
+Click the "Run" button to start the simulation.
+UVSim will process the file and display output information within its window.
+
+5. Input Codes as Prompted:
+If UVSim requires additional input during execution, enter the codes when prompted. Inputs should be in the format of +0000 for positive numbers or -0000 for negative numbers, where 0000 represents your numeric value.
+
+6. Completion and Restart:
+After the program finishes execution, UVSim will be ready for another run. You can choose to load another file and repeat the process as desired.

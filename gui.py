@@ -1,3 +1,4 @@
+import re
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
@@ -19,7 +20,6 @@ class GUI:
         self.root.title("UVSim Team E")
 
         #initialize ui frames
-        self.init_menu()
         self.init_status()
         self.init_output()
         self.init_input()
@@ -34,7 +34,9 @@ class GUI:
 
     def get_file(self):
         self.file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
-        self.file_name_label.config(text = f'Selected file: {self.file_path}')
+        #trim filepath so it fits on the screen
+        trimmed_name = re.search("([^\\/]+)$", self.file_path).group()
+        self.file_name_label.config(text = f'Selected file: {trimmed_name}')
         f_path_steps = self.file_path.split('/')
         if self.file_path:
             self.display_output(f"Successfully loaded '{f_path_steps[-1]}'")
@@ -68,15 +70,16 @@ class GUI:
 
     def init_status(self):
         self.status_frame = tk.Frame(self.root)
-        self.status_frame.columnconfigure(0, weight=1)
-        self.status_frame.columnconfigure(0, weight=1)
+        self.status_frame.columnconfigure(0, weight=1, minsize=100)
+        self.status_frame.columnconfigure(1, weight=1)
+        self.status_frame.columnconfigure(2, weight=1, minsize=100)
+        
+        self.open_file_button = tk.Button(self.status_frame, text="Select file", font=('Arial', 18), command=self.get_file)
+        self.open_file_button.grid(row=0, column=0, sticky=tk.W+tk.E)
 
         self.file_name = 'Selected file: file_name.txt'
-        self.file_name_label = tk.Label(self.status_frame, text=self.file_name, font=('Arial', 18))
-        self.file_name_label.grid(row=0, column=0, sticky=tk.W+tk.E)
-
-        self.open_file_button = tk.Button(self.status_frame, text="Select file", font=('Arial', 18), command=self.get_file)
-        self.open_file_button.grid(row=0, column=1, sticky=tk.W+tk.E)
+        self.file_name_label = tk.Label(self.status_frame, text=self.file_name, font=('Arial', 18), wraplength=400)
+        self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E)
 
         self.run_button = tk.Button(self.status_frame, text="run", font=('Arial', 18), command=self.run_file)
         self.run_button.grid(row=0, column=2, sticky=tk.W+tk.E)

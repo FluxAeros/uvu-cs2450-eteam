@@ -22,6 +22,7 @@ class IO:
         memory.set_main_memory(index, in_num)
 
 
+
     @staticmethod
     def write(memory, index, GUI):
         GUI.display_output("Output: " + str(memory.get_main_memory(index)).zfill(4))

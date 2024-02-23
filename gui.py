@@ -6,9 +6,11 @@ from memory import Memory
 from read_file import ReadFile
 from processor import Processor
 from input_output import IO
+import threading
+
+
 
 class GUI:
-
     user_input = ""
 
     def __init__(self):

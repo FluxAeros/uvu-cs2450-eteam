@@ -40,9 +40,6 @@ class GUI:
             self.display_error("no file selected")
 
     def run_file(self):
-##        for i in range (1, 100, 3):
-##            txt = 'x' * i
-##            self.display_output(txt)
         def process_file():
             try:
                 memory = Memory()

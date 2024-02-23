@@ -7,9 +7,8 @@ from input_output import IO
 
 class Processor:
     @staticmethod
-    def process(memory):
+    def process(memory, GUI):
         program_counter = 0
-
         while program_counter <= (len(memory.main_memory)-1):
 
             instruction = memory.get_main_memory(program_counter)
@@ -18,11 +17,11 @@ class Processor:
 
             match operationCode:
                 case 10:
-                    IO.read(memory, index)
+                    IO.read(memory, index, GUI)
                     program_counter += 1
                 
                 case 11:
-                    IO.write(memory, index)
+                    IO.write(memory, index, GUI)
                     program_counter += 1
 
                 case 20:

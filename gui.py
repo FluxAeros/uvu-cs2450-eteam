@@ -4,9 +4,13 @@ from tkinter import filedialog
 from memory import Memory
 from read_file import ReadFile
 from processor import Processor
+from input_output import IO
+import threading
 
 
 class GUI:
+
+    user_input = ""
 
     def __init__(self):
         self.root = tk.Tk()
@@ -22,18 +26,38 @@ class GUI:
         self.root.mainloop()
     
     def get_input(self):
-        input = self.input_text.get('1.0', tk.END).strip()
-        self.input_text.delete('1.0', tk.END)
-        print("Input: {}".format(input))
+        GUI.user_input = self.input_text.get('1.0', tk.END).strip()  # Capture input
+        self.input_text.delete('1.0', tk.END)  # Clear the input field
+        self.display_output(GUI.user_input)
+        IO.input_ready_event.set()
 
     def get_file(self):
         self.file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
         self.file_name_label.config(text = f'Selected file: {self.file_path}')
+        f_path_steps = self.file_path.split('/')
+        if self.file_path:
+            self.display_output(f"Successfully loaded '{f_path_steps[-1]}'")
+        else:
+            self.display_error("no file selected")
 
     def run_file(self):
-        memory = Memory()
-        ReadFile.read_file_to_memory(memory, self.file_path)
-        Processor.process(memory)
+##        for i in range (1, 100, 3):
+##            txt = 'x' * i
+##            self.display_output(txt)
+        def process_file():
+            try:
+                memory = Memory()
+                ReadFile.read_file_to_memory(memory, self.file_path)
+                Processor.process(memory, self)
+            except AttributeError:
+                self.display_error("no file selected")
+            except FileNotFoundError:
+                self.display_error("no file selected")
+            except IndexError:
+                self.display_error("Invalid memory location")
+
+        processing_thread = threading.Thread(target=process_file)
+        processing_thread.start()
 
     def init_menu(self):
         self.menu_bar = tk.Menu(self.root)
@@ -62,9 +86,57 @@ class GUI:
         self.status_frame.pack(fill='x', padx=10, pady=10)
 
     def init_output(self):
-        self.output_label = tk.Label(height='12', text="this is where output goes", font=('Arial', 18), 
-                                     background="black", foreground="white")
-        self.output_label.pack(fill='x', padx=10, pady=10)
+        frame=tk.Frame(self.root,width=300,height=10000)
+        frame.pack(expand=True, fill=tk.BOTH) #.grid(row=0,column=0)
+        self.canvas=tk.Canvas(frame,bg="black",width=300,height=10000,scrollregion=(0,0,1000,10000))
+        hbar=tk.Scrollbar(frame,orient=tk.HORIZONTAL)
+        hbar.pack(side=tk.BOTTOM,fill=tk.X)
+        hbar.config(command=self.canvas.xview)
+        vbar=tk.Scrollbar(frame,orient=tk.VERTICAL)
+        vbar.pack(side=tk.RIGHT,fill=tk.Y)
+        vbar.config(command=self.canvas.yview)
+        self.canvas.config(width=300,height=300)
+        self.canvas.config(xscrollcommand=hbar.set, yscrollcommand=vbar.set)
+        self.canvas.pack(side=tk.LEFT,expand=True,fill=tk.BOTH)
+##        self.output_box = tk.Canvas(self.root, height=500, width=800, bg="black")
+##        self.output_box.pack(fill='x', padx=10, pady=10)
+        self.curr_line = 1
+        self.o_font_size = 12
+        self.display_output("Please select a file")
+##
+##        frame = tk.Frame(self.root, width=300, height=300)
+##        frame.pack(expand = True, fill = tk.BOTH) #.grid(row=0,column=0)
+##        hbar = tk.Scrollbar(frame, orient = tk.HORIZONTAL)
+##        hbar.pack(side = tk.BOTTOM, fill = tk.X)
+##        hbar.config(command = self.output_box.xview)
+##        vbar = tk.Scrollbar(frame, orient = tk.VERTICAL)
+##        vbar.pack(side = tk.RIGHT, fill = tk.Y)
+##        vbar.config(command = self.output_box.yview)
+##        self.output_box.config(xscrollcommand=hbar.set, yscrollcommand=vbar.set)
+
+    def display_output(self, txt):
+        if len(txt) % 2:
+            pad = (len(txt) * 3.5) - 1
+        else:
+            pad = len(txt) * 3.5
+        output_y = self.curr_line * (self.o_font_size * 1.5)
+        output_x = 5 #pad + (self.o_font_size * .5)
+        self.curr_line += 1
+        self.canvas.create_text(output_x, output_y, text=txt, font=('Arial', self.o_font_size), fill="white", anchor = tk.SW)
+        self.canvas.pack()
+        if output_y >= 10000:
+            self.canvas.delete("all")
+            self.curr_line = 1
+            self.display_output("Warning: Window reset due to size")
+##        output_y = self.curr_line * (self.o_font_size * 1.5)
+##        output_x = (len(txt) * 3.5) + (self.o_font_size * .5)
+##        self.curr_line += 1
+##        self.output_box.create_text(output_x, output_y, text=txt, font=('Arial', self.o_font_size), fill="white")
+##        self.output_box.pack()
+
+    def display_error(self, error_msg):
+        error_txt = 'ERROR: ' + error_msg
+        self.display_output(error_txt)
 
     def init_input(self):
         self.input_frame = tk.Frame(self.root)

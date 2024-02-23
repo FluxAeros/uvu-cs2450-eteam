@@ -1,5 +1,7 @@
 import subprocess
 
+import subprocess
+
 from gui import GUI
 
 def install_reqs():

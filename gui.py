@@ -1,12 +1,11 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
+import threading
 from memory import Memory
 from read_file import ReadFile
 from processor import Processor
 from input_output import IO
-import threading
-
 
 class GUI:
 
@@ -22,9 +21,9 @@ class GUI:
         self.init_status()
         self.init_output()
         self.init_input()
-        
+
         self.root.mainloop()
-    
+
     def get_input(self):
         GUI.user_input = self.input_text.get('1.0', tk.END).strip()  # Capture input
         self.input_text.delete('1.0', tk.END)  # Clear the input field
@@ -67,12 +66,12 @@ class GUI:
 
         self.menu_bar.add_cascade(menu=self.file_menu, label="File")
         self.root.config(menu=self.menu_bar)
-    
+
     def init_status(self):
         self.status_frame = tk.Frame(self.root)
         self.status_frame.columnconfigure(0, weight=1)
         self.status_frame.columnconfigure(0, weight=1)
-        
+
         self.file_name = 'Selected file: file_name.txt'
         self.file_name_label = tk.Label(self.status_frame, text=self.file_name, font=('Arial', 18))
         self.file_name_label.grid(row=0, column=0, sticky=tk.W+tk.E)
@@ -87,8 +86,10 @@ class GUI:
 
     def init_output(self):
         frame=tk.Frame(self.root,width=300,height=10000)
-        frame.pack(expand=True, fill=tk.BOTH) #.grid(row=0,column=0)
+        frame.pack(expand=True, fill=tk.BOTH)
         self.canvas=tk.Canvas(frame,bg="black",width=300,height=10000,scrollregion=(0,0,1000,10000))
+
+        #scroll bar
         hbar=tk.Scrollbar(frame,orient=tk.HORIZONTAL)
         hbar.pack(side=tk.BOTTOM,fill=tk.X)
         hbar.config(command=self.canvas.xview)
@@ -98,41 +99,22 @@ class GUI:
         self.canvas.config(width=300,height=300)
         self.canvas.config(xscrollcommand=hbar.set, yscrollcommand=vbar.set)
         self.canvas.pack(side=tk.LEFT,expand=True,fill=tk.BOTH)
-##        self.output_box = tk.Canvas(self.root, height=500, width=800, bg="black")
-##        self.output_box.pack(fill='x', padx=10, pady=10)
+
         self.curr_line = 1
         self.o_font_size = 12
         self.display_output("Please select a file")
-##
-##        frame = tk.Frame(self.root, width=300, height=300)
-##        frame.pack(expand = True, fill = tk.BOTH) #.grid(row=0,column=0)
-##        hbar = tk.Scrollbar(frame, orient = tk.HORIZONTAL)
-##        hbar.pack(side = tk.BOTTOM, fill = tk.X)
-##        hbar.config(command = self.output_box.xview)
-##        vbar = tk.Scrollbar(frame, orient = tk.VERTICAL)
-##        vbar.pack(side = tk.RIGHT, fill = tk.Y)
-##        vbar.config(command = self.output_box.yview)
-##        self.output_box.config(xscrollcommand=hbar.set, yscrollcommand=vbar.set)
 
     def display_output(self, txt):
-        if len(txt) % 2:
-            pad = (len(txt) * 3.5) - 1
-        else:
-            pad = len(txt) * 3.5
         output_y = self.curr_line * (self.o_font_size * 1.5)
-        output_x = 5 #pad + (self.o_font_size * .5)
+        output_x = 5
         self.curr_line += 1
-        self.canvas.create_text(output_x, output_y, text=txt, font=('Arial', self.o_font_size), fill="white", anchor = tk.SW)
+        self.canvas.create_text(output_x, output_y, text=txt, font=('Arial', self.o_font_size),
+                                fill="white", anchor = tk.SW)
         self.canvas.pack()
         if output_y >= 10000:
             self.canvas.delete("all")
             self.curr_line = 1
             self.display_output("Warning: Window reset due to size")
-##        output_y = self.curr_line * (self.o_font_size * 1.5)
-##        output_x = (len(txt) * 3.5) + (self.o_font_size * .5)
-##        self.curr_line += 1
-##        self.output_box.create_text(output_x, output_y, text=txt, font=('Arial', self.o_font_size), fill="white")
-##        self.output_box.pack()
 
     def display_error(self, error_msg):
         error_txt = 'ERROR: ' + error_msg
@@ -142,11 +124,12 @@ class GUI:
         self.input_frame = tk.Frame(self.root)
         self.input_frame.columnconfigure(0, weight=1)
         self.input_frame.columnconfigure(0, weight=1)
-        
+
         self.input_text = tk.Text(self.input_frame, height='2',font=('Arial', 16))
         self.input_text.grid(row=0, column=0)
-        
-        self.input_button = tk.Button(self.input_frame, text="enter", font=('Arial', 18), command=self.get_input)
+
+        self.input_button = tk.Button(self.input_frame, text="enter", font=('Arial', 18),
+                                      command=self.get_input)
         self.input_button.grid(row=0, column=1, sticky=tk.W+tk.E)
 
         self.input_frame.pack(fill='x', padx=10, pady=10)

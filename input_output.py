@@ -2,7 +2,7 @@ from memory import Memory
 import threading
 
 class IO:
-    
+
     input_ready_event = threading.Event()
     @staticmethod
     def read(memory, index, GUI):
@@ -12,15 +12,15 @@ class IO:
         in_num = GUI.user_input
         try:
             in_num = int(in_num)
-        except:
+        except ValueError:
             GUI.display_error("Input must be a number")
-            raise SyntaxError("Input must be a number")
+            raise ValueError("Input must be a number")
         if (in_num < -9999 or in_num > 9999):
             GUI.display_error("Number is too large")
-            raise OverflowError("Number is too large")
-        
+            raise ValueError("Number is too large")
+
         memory.set_main_memory(index, in_num)
-        
+
 
     @staticmethod
     def write(memory, index, GUI):

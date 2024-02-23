@@ -20,9 +20,9 @@ class Processor:
                 case 10:
                     IO.read(memory, index, GUI)
                     program_counter += 1
-                
+
                 case 11:
-                    IO.write(memory, index)
+                    IO.write(memory, index, GUI)
                     program_counter += 1
 
                 case 20:

@@ -1,15 +1,13 @@
 import re
+import threading
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
 
-import threading
-
 from memory import Memory
 from processor import Processor
-from read_file import ReadFilefrom input_output import IO
-import threading
-
+from read_file import ReadFile
+from input_output import IO
 from read_file import ReadFile
 
 class GUI:
@@ -19,8 +17,7 @@ class GUI:
         self.root = tk.Tk()
         self.root.geometry("800x500")
         self.root.title("UVSim Team E")
-        self.root.configure(bg="green")
-        self.root.configure(bg="green")
+        self.root.configure(bg="grey12")
 
         #initialize ui frames
         self.init_status()
@@ -38,11 +35,10 @@ class GUI:
     def get_file(self):
         self.file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
         #trim filepath so it fits on the screen
-        trimmed_name = re.search("([^\\/]+)$", self.file_path).group()
+        trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()
         self.file_name_label.config(text = f'Selected file: {trimmed_name}')
-        f_path_steps = self.file_path.split('/')
         if self.file_path:
-            self.display_output(f"Successfully loaded '{f_path_steps[-1]}'")
+            self.display_output(f"Successfully loaded '{trimmed_name}'")
         else:
             self.display_error("no file selected")
 
@@ -62,45 +58,29 @@ class GUI:
         processing_thread = threading.Thread(target=process_file)
         processing_thread.start()
 
-    def init_menu(self):
-        self.menu_bar = tk.Menu(self.root)
-
-        self.file_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.file_menu.add_command(label="Close", command=exit)
-
-        self.menu_bar.add_cascade(menu=self.file_menu, label="File")
-        self.root.config(menu=self.menu_bar)
-
     def init_status(self):
-        self.status_frame = tk.Frame(self.root)
-        self.status_frame.columnconfigure(0, weight=1, minsize=100)
-        self.status_frame.columnconfigure(1, weight=1)
-        self.status_frame.columnconfigure(2, weight=1, minsize=100)
+        self.status_frame = tk.Frame(self.root, bg="gray25")
+        self.status_frame.columnconfigure(0, weight=1)
+        self.status_frame.columnconfigure(1, weight=6)
+        self.status_frame.columnconfigure(2, weight=1)
         
-        self.status_frame.columnconfigure(0, weight=1, minsize=100)
-        self.status_frame.columnconfigure(1, weight=1)
-        self.status_frame.columnconfigure(2, weight=1, minsize=100)
-        
-        self.open_file_button = tk.Button(self.status_frame, text="Select file", font=('Arial', 18), command=self.get_file)
-        self.open_file_button.grid(row=0, column=0, sticky=tk.W+tk.E)
+        self.open_file_button = tk.Button(self.status_frame, text="Select file", font=('Arial', 18), 
+                                          command=self.get_file, background="gray70")
+        self.open_file_button.grid(row=0, column=0, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.file_name = 'Select a file to start'
-        self.file_name_label = tk.Label(self.status_frame, text=self.file_name, font=('Arial', 18), wraplength=400)
-        self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E)
-        self.open_file_button.grid(row=0, column=0, sticky=tk.W+tk.E)
+        self.file_name_label = tk.Label(self.status_frame, text=self.file_name, font=('Arial', 18), wraplength=400, bg="gray25",
+                                         foreground="gray80")
+        self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
 
-        self.file_name = 'Select a file to start'
-        self.file_name_label = tk.Label(self.status_frame, text=self.file_name, font=('Arial', 18), wraplength=400)
-        self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E)
-
-        self.run_button = tk.Button(self.status_frame, text="run", font=('Arial', 18), command=self.run_file)
-        self.run_button.grid(row=0, column=2, sticky=tk.W+tk.E)
+        self.run_button = tk.Button(self.status_frame, text="Run", font=('Arial', 18), command=self.run_file, bg="darkgreen", foreground='gray80')
+        self.run_button.grid(row=0, column=2, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.status_frame.pack(fill='x', padx=10, pady=10)
 
     def init_output(self):
         frame=tk.Frame(self.root,width=300,height=10000)
-        frame.pack(expand=True, fill=tk.BOTH)
+        frame.pack(expand=True, fill=tk.BOTH, padx=10)
         self.canvas=tk.Canvas(frame,bg="black",width=300,height=10000,scrollregion=(0,0,1000,10000))
 
         #scroll bar
@@ -135,15 +115,15 @@ class GUI:
         self.display_output(error_txt)
 
     def init_input(self):
-        self.input_frame = tk.Frame(self.root)
+        self.input_frame = tk.Frame(self.root, bg="gray25")
         self.input_frame.columnconfigure(0, weight=1)
         self.input_frame.columnconfigure(0, weight=1)
 
-        self.input_text = tk.Text(self.input_frame, height='2',font=('Arial', 16))
-        self.input_text.grid(row=0, column=0)
+        self.input_text = tk.Text(self.input_frame, height='2',font=('Arial', 16), background="gray70")
+        self.input_text.grid(row=0, column=0, padx=5, pady=5)
 
-        self.input_button = tk.Button(self.input_frame, text="enter", font=('Arial', 18),
-                                      command=self.get_input)
-        self.input_button.grid(row=0, column=1, sticky=tk.W+tk.E)
+        self.input_button = tk.Button(self.input_frame, text="Enter", font=('Arial', 18),
+                                      command=self.get_input, background="gray70")
+        self.input_button.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.input_frame.pack(fill='x', padx=10, pady=10)

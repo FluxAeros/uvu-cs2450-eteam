@@ -2,10 +2,10 @@ import re
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
-from memory import Memory
-from read_file import ReadFile
-from processor import Processor
 
+from memory import Memory
+from processor import Processor
+from read_file import ReadFile
 
 class GUI:
 
@@ -13,12 +13,13 @@ class GUI:
         self.root = tk.Tk()
         self.root.geometry("800x500")
         self.root.title("UVSim Team E")
+        self.root.configure(bg="green")
 
         #initialize ui frames
         self.init_status()
         self.init_output()
         self.init_input()
-        
+
         self.root.mainloop()
     
     def get_input(self):
@@ -46,7 +47,7 @@ class GUI:
         self.open_file_button = tk.Button(self.status_frame, text="Select file", font=('Arial', 18), command=self.get_file)
         self.open_file_button.grid(row=0, column=0, sticky=tk.W+tk.E)
 
-        self.file_name = 'Selected file: file_name.txt'
+        self.file_name = 'Select a file to start'
         self.file_name_label = tk.Label(self.status_frame, text=self.file_name, font=('Arial', 18), wraplength=400)
         self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E)
 

@@ -18,7 +18,6 @@ Interactive Command Execution: Users can input their machine language commands d
 
 ---Prerequisites---
 Python 3.x installed on your system.
-tkinter installed
 
 
 ---Running UVSim---

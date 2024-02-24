@@ -83,7 +83,8 @@ class GUI:
                                          foreground="gray80")
         self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
 
-        self.run_button = tk.Button(self.status_frame, text="Run", font=('Arial', 18), command=self.run_file, bg="darkgreen", foreground='gray80')
+        self.run_button = tk.Button(self.status_frame, text="Run", font=('Arial', 18), command=self.run_file,
+                                     bg="forestgreen", foreground='gray95')
         self.run_button.grid(row=0, column=2, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.status_frame.pack(fill='x', padx=10, pady=10)

@@ -50,10 +50,19 @@ class GUI:
                 Processor.process(memory, self)
             except AttributeError:
                 self.display_error("no file selected")
+                raise AttributeError("no file selected")
             except FileNotFoundError:
                 self.display_error("no file selected")
+                raise FileNotFoundError("no file selected")
             except IndexError:
                 self.display_error("Invalid memory location")
+                raise IndexError("Invalid memory location")
+            except ValueError:
+                self.display_error("Invalid file")
+                raise ValueError
+            except:
+                self.display_error("unknown")
+                raise RuntimeError("unknown")
 
         processing_thread = threading.Thread(target=process_file)
         processing_thread.start()

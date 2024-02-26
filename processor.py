@@ -67,6 +67,7 @@ class Processor:
                         program_counter = newIndex
 
                 case 43:
+                    GUI.toggle_run()
                     break
 
                 case default:

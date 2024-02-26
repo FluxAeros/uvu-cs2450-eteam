@@ -11,9 +11,12 @@ from input_output import IO
 from read_file import ReadFile
 
 class GUI:
-    user_input = ""
 
     def __init__(self):
+        self.file_path=''
+        self.trimmed_name = ""
+        self.run_status = 0
+
         self.root = tk.Tk()
         self.root.geometry("800x500")
         self.root.minsize(500,400)  
@@ -27,23 +30,40 @@ class GUI:
 
         self.root.mainloop()
         
-    def get_input(self):
+    def get_input(self, event = 1):
         GUI.user_input = self.input_text.get('1.0', tk.END).strip()  # Capture input
-        self.input_text.delete('1.0', tk.END)  # Clear the input field
+        self.input_text.delete('0.0', tk.END)  # Clear the input field
         self.display_output(GUI.user_input)
         IO.input_ready_event.set()
+        return "break"
 
     def get_file(self):
         self.file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
-        #trim filepath so it fits on the screen
-        trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()
-        self.file_name_label.config(text = f'Selected file: {trimmed_name}')
-        if self.file_path:
-            self.display_output(f"Successfully loaded '{trimmed_name}'")
+        if self.file_path != '':
+            self.trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()
+            self.file_name_label.config(text = f'Selected file: {self.trimmed_name}')
+            self.display_output(f"Successfully loaded '{self.trimmed_name}'")
         else:
+            self.trimmed_name = 'NO FILE'
+            self.file_name_label.config(text = f'Select a file to start')
             self.display_error("no file selected")
 
+    def toggle_run(self, errors = False):
+        if self.run_status == 0:
+            self.display_output(f"Running file {self.trimmed_name}")
+            self.run_status = 1
+            self.run_button.config(state=tk.DISABLED)
+        elif(self.run_status == 1 and not(errors)):
+            self.display_output(f"Finished running {self.trimmed_name}")
+            self.run_status = 0
+            self.run_button.config(state=tk.NORMAL)
+        else:
+            self.display_output(f"Terminated {self.trimmed_name} with errors")
+            self.run_status = 0
+            self.run_button.config(state=tk.NORMAL)
+
     def run_file(self):
+        self.toggle_run()
         def process_file():
             try:
                 memory = Memory()
@@ -51,18 +71,23 @@ class GUI:
                 Processor.process(memory, self)
             except AttributeError:
                 self.display_error("no file selected")
+                self.toggle_run(True)
                 raise AttributeError("no file selected")
             except FileNotFoundError:
                 self.display_error("no file selected")
+                self.toggle_run(True)
                 raise FileNotFoundError("no file selected")
             except IndexError:
                 self.display_error("Invalid memory location")
+                self.toggle_run(True)
                 raise IndexError("Invalid memory location")
             except ValueError:
                 self.display_error("Invalid file")
+                self.toggle_run(True)
                 raise ValueError
             except:
                 self.display_error("unknown")
+                self.toggle_run(True)
                 raise RuntimeError("unknown")
 
         processing_thread = threading.Thread(target=process_file)
@@ -78,13 +103,12 @@ class GUI:
                                           command=self.get_file, background="gray70")
         self.open_file_button.grid(row=0, column=0, sticky=tk.W+tk.E, padx=5, pady=5)
 
-        self.file_name = 'Select a file to start'
-        self.file_name_label = tk.Label(self.status_frame, text=self.file_name, font=('Arial', 18), wraplength=400, bg="gray25",
+        self.file_name_label = tk.Label(self.status_frame, text='Select a file to start', font=('Arial', 18), wraplength=400, bg="gray25",
                                          foreground="gray80")
         self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.run_button = tk.Button(self.status_frame, text="Run", font=('Arial', 18), command=self.run_file,
-                                     bg="forestgreen", foreground='gray95')
+                                     bg="forestgreen", foreground='white')
         self.run_button.grid(row=0, column=2, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.status_frame.pack(fill='x', padx=10, pady=10)
@@ -110,7 +134,7 @@ class GUI:
         self.labels = []
         self.display_output("Please select a file")
 
-    def display_output(self, txt):
+    def display_output(self, txt = ''):
         label = tk.Label(self.canvas, text=txt, font=('Arial', self.o_font_size), fg="gray85", bg="black",
                           anchor=tk.W, padx=5, pady=5)
         self.labels.append(label)
@@ -133,6 +157,7 @@ class GUI:
 
         self.input_text = tk.Text(self.input_frame, height='2',font=('Arial', 16), background="gray70")
         self.input_text.grid(row=0, column=0, padx=5, pady=5)
+        self.input_text.bind("<Return>", self.get_input)
 
         self.input_button = tk.Button(self.input_frame, text="Enter", font=('Arial', 18),
                                       command=self.get_input, background="gray70")

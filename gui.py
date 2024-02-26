@@ -55,12 +55,10 @@ class GUI:
             self.run_button.config(state=tk.DISABLED)
         elif(self.run_status == 1 and not(errors)):
             self.display_output(f"Finished running {self.trimmed_name}")
-            self.display_output()
             self.run_status = 0
             self.run_button.config(state=tk.NORMAL)
         else:
             self.display_output(f"Terminated {self.trimmed_name} with errors")
-            self.display_output()
             self.run_status = 0
             self.run_button.config(state=tk.NORMAL)
 
@@ -110,7 +108,7 @@ class GUI:
         self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.run_button = tk.Button(self.status_frame, text="Run", font=('Arial', 18), command=self.run_file,
-                                     bg="forestgreen", foreground='gray95')
+                                     bg="forestgreen", foreground='white')
         self.run_button.grid(row=0, column=2, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.status_frame.pack(fill='x', padx=10, pady=10)

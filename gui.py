@@ -11,6 +11,7 @@ from input_output import IO
 from read_file import ReadFile
 
 class GUI:
+    from gui_view_file import view_file
 
     def __init__(self):
         self.file_path=''
@@ -63,23 +64,6 @@ class GUI:
             self.display_output(f"Terminated {self.trimmed_name} with errors")
             self.run_status = 0
             self.run_button.config(state=tk.NORMAL)
-
-    def view_file(self):
-        file_name = self.file_path
-        self.file_view = tk.Toplevel(self.root)
-        self.file_view.title(file_name)
-        self.file_view.geometry("800x500")
-
-        self.file_content = tk.Text(self.file_view)
-        self.file_content.pack(fill=tk.BOTH, expand=True)
-
-        try:
-            with open(file_name, 'r') as f:
-                self.file_content.insert(tk.END, f.read())
-        except FileNotFoundError:
-            self.file_content.insert(tk.END, "File not found")
-        except Exception as e:
-            self.file_content.insert(tk.END, f"An error occurred: {str(e)}")
         
 
     def run_file(self):

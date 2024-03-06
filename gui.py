@@ -11,6 +11,7 @@ from input_output import IO
 from read_file import ReadFile
 
 class GUI:
+    from gui_view_file import view_file
 
     def __init__(self):
         self.file_path=''
@@ -43,10 +44,12 @@ class GUI:
             self.trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()
             self.file_name_label.config(text = f'Selected file: {self.trimmed_name}')
             self.display_output(f"Successfully loaded '{self.trimmed_name}'")
+            self.view_file_button.config(state = 'normal')
         else:
             self.trimmed_name = 'NO FILE'
             self.file_name_label.config(text = f'Select a file to start')
             self.display_error("no file selected")
+            self.view_file_button.config(state = 'disabled')
 
     def toggle_run(self, errors = False):
         if self.run_status == 0:
@@ -61,6 +64,7 @@ class GUI:
             self.display_output(f"Terminated {self.trimmed_name} with errors")
             self.run_status = 0
             self.run_button.config(state=tk.NORMAL)
+        
 
     def run_file(self):
         self.toggle_run()
@@ -103,13 +107,17 @@ class GUI:
                                           command=self.get_file, background="gray70")
         self.open_file_button.grid(row=0, column=0, sticky=tk.W+tk.E, padx=5, pady=5)
 
+        self.view_file_button = tk.Button(self.status_frame, text="View file", font=('Arial', 18),
+                                          command=self.view_file, background="sky blue", state='disabled')
+        self.view_file_button.grid(row=0, column=2, sticky=tk.W+tk.E, padx=5, pady=5)
+
         self.file_name_label = tk.Label(self.status_frame, text='Select a file to start', font=('Arial', 18), wraplength=400, bg="gray25",
                                          foreground="gray80")
         self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.run_button = tk.Button(self.status_frame, text="Run", font=('Arial', 18), command=self.run_file,
                                      bg="forestgreen", foreground='white')
-        self.run_button.grid(row=0, column=2, sticky=tk.W+tk.E, padx=5, pady=5)
+        self.run_button.grid(row=0, column=3, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.status_frame.pack(fill='x', padx=10, pady=10)
 

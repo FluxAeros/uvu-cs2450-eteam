@@ -44,8 +44,11 @@ class GUI:
         IO.input_ready_event.set()
         return "break"
 
-    def get_file(self):
-        self.file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+    def get_file(self, new_path = False):
+        if new_path == False:
+            self.file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+        else:
+            self.file_path = new_path
         if self.file_path != '':
             self.trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()
             self.file_name_label.config(text = f'Selected file: {self.trimmed_name}')

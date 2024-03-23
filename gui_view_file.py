@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
 import re
 
 def view_file(self):
@@ -20,15 +20,20 @@ def view_file(self):
     def save_file():
         status = check_file()
         if status == True:
-            lines = self.file_content.get(1.0, "end-1c").split("\n")
-            f = open(self.file_path, "w")
-            for i in range(len(lines)):
-                f.write(lines[i])
-                if (i+1) != len(lines):
-                    f.write("\n")
-            self.file_view.destroy()
-            f.close()
-            messagebox.showinfo("File", "File saved")
+            new_file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+            if new_file_path:
+                lines = self.file_content.get(1.0, "end-1c").split("\n")
+                self.get_file(new_file_path)
+                f = open(self.file_path, "w")
+                for i in range(len(lines)):
+                    f.write(lines[i])
+                    if (i+1) != len(lines):
+                        f.write("\n")
+                self.file_view.destroy()
+                f.close()
+                messagebox.showinfo("File", "File saved")
+            else:
+                print("error getting save filepath")
         elif status == False:
             print("save aborted: syntax error")
 

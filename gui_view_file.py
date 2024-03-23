@@ -20,9 +20,15 @@ def view_file(self):
     def save_file():
         status = check_file()
         if status == True:
-            print("ready to save")
+            lines = self.file_content.get(1.0, "end-1c").split("\n")
+            f = open(self.file_path, "w")
+            for i in range(len(lines)):
+                f.write(lines[i])
+                if (i+1) != len(lines):
+                    f.write("\n")
+            f.close()
         elif status == False:
-            print("bad syntax")
+            print("save aborted: syntax error")
 
     def on_key_press(event):
         lines = self.file_content.get(1.0, "end-1c").split("\n")

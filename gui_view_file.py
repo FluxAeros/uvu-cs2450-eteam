@@ -26,7 +26,9 @@ def view_file(self):
                 f.write(lines[i])
                 if (i+1) != len(lines):
                     f.write("\n")
+            self.file_view.destroy()
             f.close()
+            messagebox.showinfo("File", "File saved")
         elif status == False:
             print("save aborted: syntax error")
 

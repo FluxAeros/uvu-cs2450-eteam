@@ -29,11 +29,17 @@ class GUI:
         self.root.title("UVSim Team E")
         self.root.configure(bg=self.primary_color)
 
+
+        self.file_edited = False
+        # Initialize your UI components here
+
         # Initialize UI frames
         self.init_status()
         self.init_output()
         self.init_input()
         self.init_color_change()
+
+        self.update_run_button_state()
 
         self.root.mainloop()
         
@@ -173,9 +179,9 @@ class GUI:
         self.input_frame.columnconfigure(0, weight=1)
         self.secondary_color_widgets.append(self.input_frame)
 
-        self.input_text = tk.Text(self.input_frame, height='2',font=('Arial', 16), background="gray70")
+        self.input_text = tk.Text(self.input_frame, height='2', font=('Arial', 16), background="gray70")
         self.input_text.grid(row=0, column=0, padx=5, pady=5)
-        self.input_text.bind("<Return>", self.get_input)
+        self.input_text.bind("<KeyRelease>", self.on_file_edit)
 
         self.input_button = tk.Button(self.input_frame, text="Enter", font=('Arial', 18),
                                       command=self.get_input, background="gray70")
@@ -255,3 +261,13 @@ class GUI:
         self.change_off_color_button = tk.Button(self.status_frame, text="Change Off-Color",
                                                  command=lambda: self.change_color('off'), background="gray70")
         self.change_off_color_button.grid(row=1, column=2, sticky=tk.W + tk.E, padx=5, pady=5)
+
+    def on_file_edit(self, event=None):
+        self.file_edited = True
+        self.update_run_button_state()
+
+    def update_run_button_state(self):
+        if self.file_edited:
+            self.run_button.config(state=tk.DISABLED)
+        else:
+            self.run_button.config(state=tk.NORMAL)

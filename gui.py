@@ -29,17 +29,12 @@ class GUI:
         self.root.title("UVSim Team E")
         self.root.configure(bg=self.primary_color)
 
-
-        self.file_edited = False
-        # Initialize your UI components here
-
         # Initialize UI frames
         self.init_status()
         self.init_output()
         self.init_input()
         self.init_color_change()
 
-        self.update_run_button_state()
 
         self.root.mainloop()
         
@@ -262,12 +257,3 @@ class GUI:
                                                  command=lambda: self.change_color('off'), background="gray70")
         self.change_off_color_button.grid(row=1, column=2, sticky=tk.W + tk.E, padx=5, pady=5)
 
-    def on_file_edit(self, event=None):
-        self.file_edited = True
-        self.update_run_button_state()
-
-    def update_run_button_state(self):
-        if self.file_edited:
-            self.run_button.config(state=tk.DISABLED)
-        else:
-            self.run_button.config(state=tk.NORMAL)

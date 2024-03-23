@@ -43,3 +43,13 @@ If UVSim requires additional input during execution, enter the codes when prompt
 
 6. Completion and Restart:
 After the program finishes execution, UVSim will be ready for another run. You can choose to load another file and repeat the process as desired.
+
+---Additional Features---
+1. Viewing/Editing Files:
+Once a file has been loaded into the simulation, click the "View file" button. From here you can view the file that has been
+loaded, as well as make changes. Upon finishing, you can click the "Save" button and save your changes to the same file, or a
+new one. Otherwise, you can click the "Cancel" or "X" buttons to close the file viewer without saving.
+
+2. Changing Color Scheme:
+You can click the "Change Primary Color" or "Change Off-Color" buttons to customize the colors of the simulation's window.
+Both buttons will pull up a color setting menu, where you just need to select the desired color and click "OK"

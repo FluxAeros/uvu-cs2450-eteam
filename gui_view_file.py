@@ -9,7 +9,6 @@ def view_file(self):
         i = 1
         for line in lines:
             line = line.strip()
-            print(line)
             if bool(re.match(regex, line)) == True:
                 pass
             else:

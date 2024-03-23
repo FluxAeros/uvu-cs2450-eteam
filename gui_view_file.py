@@ -52,14 +52,19 @@ def view_file(self):
     self.file_view.title(file_name)
     self.file_view.geometry("800x500")
 
-    self.save_file_button = tk.Button(self.file_view, text="Save", font=('Arial', 18),
+    self.save_cancel_bar = tk.Frame(self.file_view, bg=self.primary_color)
+    self.primary_color_widgets.append(self.save_cancel_bar)
+    self.save_cancel_bar.pack(fill='x', padx=10, pady=10)
+    self.save_cancel_bar.columnconfigure(0, weight=1)
+    self.save_cancel_bar.columnconfigure(1, weight=1)
+
+    self.save_file_button = tk.Button(self.save_cancel_bar, text="Save", font=('Arial', 18),
                                           command=save_file, background="gray70")
 
-    self.cancel_button = tk.Button(self.file_view, text="Cancel", font=('Arial', 18),
+    self.cancel_button = tk.Button(self.save_cancel_bar, text="Cancel", font=('Arial', 18),
                                           command=cancel, background="gray70")
-    
-    self.save_file_button.pack()
-    self.cancel_button.pack()
+    self.save_file_button.grid(row=0, column=0, sticky=tk.W+tk.E, padx=5, pady=5)
+    self.cancel_button.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
     self.file_content = tk.Text(self.file_view,height='110')
     self.file_content.pack(fill=tk.BOTH, expand=True)
     

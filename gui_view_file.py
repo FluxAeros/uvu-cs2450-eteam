@@ -24,6 +24,9 @@ def view_file(self):
         elif status == False:
             print("bad syntax")
 
+    def cancel():
+        self.file_view.destroy()
+
     def on_key_press(event):
         lines = self.file_content.get(1.0, "end-1c").split("\n")
         if len(lines) > 100:
@@ -38,8 +41,12 @@ def view_file(self):
 
     self.save_file_button = tk.Button(self.file_view, text="Save", font=('Arial', 18),
                                           command=save_file, background="gray70")
+
+    self.cancel_button = tk.Button(self.file_view, text="Cancel", font=('Arial', 18),
+                                          command=cancel, background="gray70")
     
     self.save_file_button.pack()
+    self.cancel_button.pack()
     self.file_content = tk.Text(self.file_view,height='110')
     self.file_content.pack(fill=tk.BOTH, expand=True)
     

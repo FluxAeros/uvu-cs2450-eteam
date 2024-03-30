@@ -2,6 +2,7 @@ class Memory:
     def __init__(self):
         self.main_memory = [0] * 250
         self.accumulator = 0
+        self.old_file = False
 
     def get_main_memory(self, index):
         try:
@@ -20,3 +21,9 @@ class Memory:
 
     def set_accumulator(self, value):
         self.accumulator = value
+
+    def get_old_file(self):
+        return self.old_file
+    
+    def set_old_file(self, value):
+        self.old_file = value

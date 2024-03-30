@@ -1,6 +1,6 @@
 class Memory:
     def __init__(self):
-        self.main_memory = [0] * 100
+        self.main_memory = [0] * 250
         self.accumulator = 0
 
     def get_main_memory(self, index):

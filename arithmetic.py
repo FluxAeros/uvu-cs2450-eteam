@@ -3,19 +3,12 @@ from memory import Memory
 class Arithmetic:
     @staticmethod
     def overflow(ans):
-        #checking for overflow
-        length = len(str(ans))
-        #accounting for '-' sign
-        neg = False
-        if ans < 0:
-            neg = True
-        if length > 4:
-            overflow = length - 4
-            #converting ans to string for truncation
-            if neg:
-                return int(str(ans)[overflow:]) * -1
-            else:
-                return int(str(ans)[overflow:])
+        length = len(str(abs(ans)))
+        if length > 6:
+            overflow = length - 6
+            ans_str = str(ans)
+            truncated_ans = ans_str[0] + ans_str[overflow+1:] if ans < 0 else ans_str[overflow:]
+            return int(truncated_ans)
         else:
             return ans
 

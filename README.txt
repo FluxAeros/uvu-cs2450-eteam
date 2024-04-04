@@ -11,9 +11,10 @@ hands-on experience that significantly deepens their understanding of the underl
 
 ---Features---
 Simulated CPU and Accumulator: Mimics the core functions of a central processing unit and an accumulator for arithmetic operations.
-100-Word Main Memory: Offers a simplified model of computer memory, allowing for straightforward program execution.
+250-Word Main Memory: Offers a simplified model of computer memory, allowing for straightforward program execution.
 Support for BasicML: Executes Basic Machine Language (BasicML) instructions, covering I/O, arithmetic, and control operations.
 Interactive Command Execution: Users can input their machine language commands directly, facilitating an engaging learning process.
+Color changing UI: Users can change main and secondary color of the ui.
 
 
 ---Prerequisites---

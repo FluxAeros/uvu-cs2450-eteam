@@ -52,6 +52,8 @@ class GUI:
         if self.file_path != '':
             self.trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()
             self.file_name_label.config(text = f'Selected file: {self.trimmed_name}')
+            memory = Memory()
+            ReadFile.read_file_to_memory(memory, self.file_path)
             self.display_output(f"Successfully loaded '{self.trimmed_name}'")
             self.view_file_button.config(state = 'normal')
         else:
@@ -79,8 +81,6 @@ class GUI:
         self.toggle_run()
         def process_file():
             try:
-                memory = Memory()
-                ReadFile.read_file_to_memory(memory, self.file_path)
                 Processor.process(memory, self)
             except AttributeError:
                 self.display_error("no file selected")

@@ -22,8 +22,6 @@ class GUI:
         self.primary_color = '#4C721D'  # Dark green
         self.off_color = '#FFFFFF'  # White
 
-        self.file_path = ''
-        self.trimmed_name = ""
         self.run_status = 0
 
         self.root = tk.Tk()
@@ -32,58 +30,62 @@ class GUI:
         self.root.title("UVSim Team E")
         self.root.configure(bg=self.primary_color)
 
-        # Initialize UI frames
+        # Initialize UI frame
         self.init_status()
-        self.init_output()
-        self.init_input()
-        self.init_color_change()
 
         self.root.mainloop()
-        
+
+
     def get_input(self, event = 1):
         GUI.user_input = self.input_text.get('1.0', tk.END).strip()  # Capture input
         self.input_text.delete('0.0', tk.END)  # Clear the input field
-        self.display_output(GUI.user_input)
+        #self.display_output(GUI.user_input)
         IO.input_ready_event.set()
         return "break"
 
     def get_file(self, new_path = False):
         if new_path == False:
-            self.file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+            file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
         else:
-            self.file_path = new_path
-        if self.file_path != '':
-            self.trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()
-            self.file_name_label.config(text = f'Selected file: {self.trimmed_name}')
-            ReadFile.read_file_to_memory(self.memory, self.file_path)
-            self.display_output(f"Successfully loaded '{self.trimmed_name}'")
-            self.view_file_button.config(state = 'normal')
+            file_path = new_path
+        if file_path != '':
+            trimmed_name = (re.search("([^\\/]+)$", file_path)).group()
+            file_name = f'Selected file: {trimmed_name}'
+            #self.display_output(f"Successfully loaded '{self.trimmed_name}'")
+            ##self.view_file_button.config(state = 'normal')
+            new_instance = tk.Toplevel(self.root)
+            self.new_status(new_instance, file_name, trimmed_name, file_path)
+            self.init_output(new_instance)
+            self.init_input(new_instance)
+            self.init_color_change()
         else:
-            self.trimmed_name = 'NO FILE'
+            trimmed_name = 'NO FILE'
             self.file_name_label.config(text = f'Select a file to start')
             self.display_error("no file selected")
             self.view_file_button.config(state = 'disabled')
 
-    def toggle_run(self, errors = False):
+    def toggle_run(self, trimmed_name, errors = False):
         if self.run_status == 0:
-            self.display_output(f"Running file {self.trimmed_name}")
+            self.display_output(f"Running file {trimmed_name}")
             self.run_status = 1
             self.run_button.config(state=tk.DISABLED)
         elif(self.run_status == 1 and not(errors)):
-            self.display_output(f"Finished running {self.trimmed_name}")
+            self.display_output(f"Finished running {trimmed_name}")
             self.run_status = 0
             self.run_button.config(state=tk.NORMAL)
         else:
-            self.display_output(f"Terminated {self.trimmed_name} with errors")
+            self.display_output(f"Terminated {trimmed_name} with errors")
             self.run_status = 0
             self.run_button.config(state=tk.NORMAL)
         
 
-    def run_file(self):
-        self.toggle_run()
+    def run_file(self, file_path, trimmed_name):
+        self.toggle_run(trimmed_name)
         def process_file():
             try:
-                Processor.process(self.memory, self)
+                memory = Memory()
+                ReadFile.read_file_to_memory(memory, file_path)
+                Processor.process(memory, self)
             except AttributeError:
                 self.display_error("no file selected")
                 self.toggle_run(True)
@@ -128,17 +130,43 @@ class GUI:
                                          fg="black")
         self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
 
-        self.run_button = tk.Button(self.status_frame, text="Run", font=('Arial', 18), command=self.run_file,
+##        self.run_button = tk.Button(self.status_frame, text="Run", font=('Arial', 18), command=self.run_file,
+##                                     bg="forestgreen", foreground='white')
+##        self.run_button.grid(row=0, column=3, sticky=tk.W+tk.E, padx=5, pady=5)
+
+        self.status_frame.pack(fill='x', padx=10, pady=10)
+
+    def new_status(self, new_instance, file_name, trimmed_name, file_path):        
+        self.status_frame = tk.Frame(new_instance, bg=self.primary_color)
+        self.primary_color_widgets.append(self.status_frame)
+        self.status_frame.pack(fill='x', padx=10, pady=10)
+        self.status_frame.columnconfigure(0, weight=1)
+        self.status_frame.columnconfigure(1, weight=6)
+        self.status_frame.columnconfigure(2, weight=1)
+
+        self.open_file_button = tk.Button(self.status_frame, text="Select file", font=('Arial', 18),
+                                          command=self.get_file, background="gray70")
+        self.open_file_button.grid(row=0, column=0, sticky=tk.W+tk.E, padx=5, pady=5)
+
+        self.view_file_button = tk.Button(self.status_frame, text="View file", font=('Arial', 18),
+                                          command=self.view_file, bg="white", fg="black",state='disabled')
+        self.view_file_button.grid(row=0, column=2, sticky=tk.W+tk.E, padx=5, pady=5)
+
+        self.file_name_label = tk.Label(self.status_frame, text=file_name, font=('Arial', 18), wraplength=400, bg="white",
+                                         fg="black")
+        self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
+
+        self.run_button = tk.Button(self.status_frame, text="Run", font=('Arial', 18), command= lambda: self.run_file(file_path, trimmed_name),
                                      bg="forestgreen", foreground='white')
         self.run_button.grid(row=0, column=3, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.status_frame.pack(fill='x', padx=10, pady=10)
 
-    def init_output(self):
+    def init_output(self, new_instance):
         def on_mousewheel(event):
             self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
         
-        frame = tk.Frame(self.root, width=300, height=200, bg="white")
+        frame = tk.Frame(new_instance, width=300, height=200, bg="white")
         frame.pack(expand=True, fill=tk.BOTH, padx=10)
         self.secondary_color_widgets.append(frame)
         
@@ -172,8 +200,8 @@ class GUI:
         error_txt = 'ERROR: ' + error_msg
         self.display_output(error_txt)
 
-    def init_input(self):
-        self.input_frame = tk.Frame(self.root, bg="white")
+    def init_input(self, new_instance):
+        self.input_frame = tk.Frame(new_instance, bg="white")
         self.input_frame.columnconfigure(0, weight=1)
         self.input_frame.columnconfigure(0, weight=1)
         self.secondary_color_widgets.append(self.input_frame)

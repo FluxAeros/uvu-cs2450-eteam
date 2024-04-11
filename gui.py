@@ -1,3 +1,6 @@
+#gui will be updated to only perform its core responsibilities
+#gui home is responsible for selecting a valid file and changing colors now, everything else goes
+
 import re
 import threading
 import tkinter as tk
@@ -10,6 +13,8 @@ from read_file import ReadFile
 from input_output import IO
 from read_file import ReadFile
 from gui_config import read_config, save_config
+from gui_run_file import FileView
+
 class GUI:
     from gui_view_file import view_file
 
@@ -54,6 +59,7 @@ class GUI:
             #self.display_output(f"Successfully loaded '{self.trimmed_name}'")
             ##self.view_file_button.config(state = 'normal')
             new_instance = tk.Toplevel(self.root)
+            new_file_view = FileView(self, file_path)
             self.new_status(new_instance, file_name, trimmed_name, file_path)
             self.init_output(new_instance)
             self.init_input(new_instance)
@@ -64,23 +70,10 @@ class GUI:
             self.display_error("no file selected")
             self.view_file_button.config(state = 'disabled')
 
-    def toggle_run(self, trimmed_name, errors = False):
-        if self.run_status == 0:
-            self.display_output(f"Running file {trimmed_name}")
-            self.run_status = 1
-            self.run_button.config(state=tk.DISABLED)
-        elif(self.run_status == 1 and not(errors)):
-            self.display_output(f"Finished running {trimmed_name}")
-            self.run_status = 0
-            self.run_button.config(state=tk.NORMAL)
-        else:
-            self.display_output(f"Terminated {trimmed_name} with errors")
-            self.run_status = 0
-            self.run_button.config(state=tk.NORMAL)
-        
+    def toggle_run(self):
+        pass
 
     def run_file(self, file_path, trimmed_name):
-        self.toggle_run(trimmed_name)
         def process_file():
             try:
                 memory = Memory()
@@ -88,23 +81,18 @@ class GUI:
                 Processor.process(memory, self)
             except AttributeError:
                 self.display_error("no file selected")
-                self.toggle_run(True)
                 raise AttributeError("no file selected")
             except FileNotFoundError:
                 self.display_error("no file selected")
-                self.toggle_run(True)
                 raise FileNotFoundError("no file selected")
             except IndexError:
                 self.display_error("Invalid memory location")
-                self.toggle_run(True)
                 raise IndexError("Invalid memory location")
             except ValueError:
                 self.display_error("Invalid file")
-                self.toggle_run(True)
                 raise ValueError
             except:
                 self.display_error("unknown")
-                self.toggle_run(True)
                 raise RuntimeError("unknown")
 
         processing_thread = threading.Thread(target=process_file)
@@ -121,10 +109,6 @@ class GUI:
         self.open_file_button = tk.Button(self.status_frame, text="Select file", font=('Arial', 18),
                                           command=self.get_file, background="gray70")
         self.open_file_button.grid(row=0, column=0, sticky=tk.W+tk.E, padx=5, pady=5)
-
-        self.view_file_button = tk.Button(self.status_frame, text="View file", font=('Arial', 18),
-                                          command=self.view_file, bg="white", fg="black",state='disabled')
-        self.view_file_button.grid(row=0, column=2, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.file_name_label = tk.Label(self.status_frame, text='Select a file to start', font=('Arial', 18), wraplength=400, bg="white",
                                          fg="black")

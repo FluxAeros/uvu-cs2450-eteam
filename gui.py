@@ -14,6 +14,9 @@ class GUI:
     from gui_view_file import view_file
 
     def __init__(self):
+
+        self.memory = Memory()
+
         self.primary_color_widgets = []
         self.secondary_color_widgets = []
         self.primary_color = '#4C721D'  # Dark green
@@ -52,8 +55,7 @@ class GUI:
         if self.file_path != '':
             self.trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()
             self.file_name_label.config(text = f'Selected file: {self.trimmed_name}')
-            memory = Memory()
-            ReadFile.read_file_to_memory(memory, self.file_path)
+            ReadFile.read_file_to_memory(self.memory, self.file_path)
             self.display_output(f"Successfully loaded '{self.trimmed_name}'")
             self.view_file_button.config(state = 'normal')
         else:
@@ -81,7 +83,7 @@ class GUI:
         self.toggle_run()
         def process_file():
             try:
-                Processor.process(memory, self)
+                Processor.process(self.memory, self)
             except AttributeError:
                 self.display_error("no file selected")
                 self.toggle_run(True)

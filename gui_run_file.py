@@ -117,7 +117,7 @@ class RunView:
         frame.pack(expand=True, fill=tk.BOTH, padx=10)
         
         self.canvas = tk.Canvas(frame, bg="black", width=300, height=200, highlightthickness=0)
-        self.canvas.bind_all("<MouseWheel>", on_mousewheel)
+        self.canvas.bind("<MouseWheel>", on_mousewheel)
         
         vbar = tk.Scrollbar(frame, orient=tk.VERTICAL, command=self.canvas.yview, elementborderwidth=0)
         vbar.pack(side=tk.RIGHT, fill=tk.Y, padx=5, pady=5)

@@ -21,13 +21,9 @@ class RunView:
         self.file_path = file_path
         self.run_status = 0
     
-        self.primary_color_widgets = []
-        self.secondary_color_widgets = []
-        self.primary_color = '#4C721D'  # Dark green
-        self.off_color = '#FFFFFF'  # White
-
         self.file_window = tk.Toplevel(self.gui.root)
         self.file_window.geometry("800x500")
+        
         self.init_run_frame()
         self.init_view_frame()
 
@@ -35,7 +31,8 @@ class RunView:
 
     def init_run_frame(self):
         # Create the run frame with a green background
-        self.run_frame = tk.Frame(self.file_window, bg="light green")
+        self.run_frame = tk.Frame(self.file_window, bg=self.gui.primary_color)
+        self.gui.primary_color_widgets.append(self.run_frame)
         self.run_status_bar(self.run_frame)
         self.output_console(self.run_frame)
         self.init_input(self.run_frame)
@@ -60,8 +57,7 @@ class RunView:
     #run frame section
     def run_status_bar(self, target_window): 
         trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()       
-        self.status_frame = tk.Frame(target_window, bg=self.primary_color)
-        self.primary_color_widgets.append(self.status_frame)
+        self.status_frame = tk.Frame(target_window, bg=self.gui.widget_bg)
 
         #use column structure for placing elements
         self.status_frame.columnconfigure(0, weight=1)
@@ -69,15 +65,16 @@ class RunView:
         self.status_frame.columnconfigure(2, weight=1)
         self.status_frame.columnconfigure(3, weight=1)
 
-        self.home_button = tk.Button(self.status_frame, text="Close", font=('Arial', 18), 
-                                     command=self.close, bg='white', fg='black')
-        self.file_name_label = tk.Label(self.status_frame, text=trimmed_name, font=('Arial', 18), wraplength=400, bg="white",
-                                         fg="black")
-        self.view_file_button = tk.Button(self.status_frame, text="View file", font=('Arial', 18),
-                                          command=self.show_view, bg="white", fg="black")
+        self.home_button = tk.Button(self.status_frame, text="Close", font=('Arial', 18), bg=self.gui.button_bg,
+                                     command=self.close)
+        self.file_name_label = tk.Label(self.status_frame, text=trimmed_name, font=('Arial', 18), wraplength=400, bg=self.gui.widget_bg,
+                                         fg=self.gui.widget_fg)
+        self.view_file_button = tk.Button(self.status_frame, text="View file", font=('Arial', 18), bg=self.gui.button_bg,
+                                          command=self.show_view)
         self.run_button = tk.Button(self.status_frame, text="Run", font=('Arial', 18), command=self.run_file,
-                                     bg="purple", foreground='white')
-        
+                                     bg=self.gui.secondary_color, foreground=self.gui.highlight_button_fg)
+        self.gui.secondary_color_widgets.append(self.run_button)
+
         #place each element onto grid
         self.home_button.grid(row=0, column=0, sticky=tk.W+tk.E, padx=5, pady=5)
         self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
@@ -105,9 +102,8 @@ class RunView:
         def on_mousewheel(event):
             self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
         
-        frame = tk.Frame(target_frame, width=300, height=200, bg="white")
+        frame = tk.Frame(target_frame, width=300, height=200, bg=self.gui.widget_bg)
         frame.pack(expand=True, fill=tk.BOTH, padx=10)
-        self.secondary_color_widgets.append(frame)
         
         self.canvas = tk.Canvas(frame, bg="black", width=300, height=200, highlightthickness=0)
         self.canvas.bind_all("<MouseWheel>", on_mousewheel)
@@ -124,17 +120,16 @@ class RunView:
         self.display_output("Please select a file")
 
     def init_input(self, target_frame):
-        self.input_frame = tk.Frame(target_frame, bg="white")
+        self.input_frame = tk.Frame(target_frame, bg=self.gui.widget_bg)
         self.input_frame.columnconfigure(0, weight=1)
         self.input_frame.columnconfigure(0, weight=1)
-        self.secondary_color_widgets.append(self.input_frame)
 
         self.input_text = tk.Text(self.input_frame, height='2',font=('Arial', 16), background="gray70")
         self.input_text.grid(row=0, column=0, padx=5, pady=5)
         self.input_text.bind("<Return>", self.get_input)
 
         self.input_button = tk.Button(self.input_frame, text="Enter", font=('Arial', 18),
-                                      command=self.get_input, background="gray70")
+                                      command=self.get_input, background=self.gui.button_bg)
         self.input_button.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.input_frame.pack(fill='x', padx=10, pady=10)

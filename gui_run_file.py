@@ -12,9 +12,9 @@ from processor import Processor
 from read_file import ReadFile
 from input_output import IO
 from read_file import ReadFile
-from gui_config import read_config, save_config
+from color_config import read_config, save_config
 
-class FileView:
+class RunView:
 
     def __init__(self, gui, file_path):
         self.gui = gui
@@ -53,9 +53,13 @@ class FileView:
     def show_run(self):
         self.run_frame.pack(expand=True, fill=tk.BOTH)
         self.view_frame.pack_forget()
+    
+    def close(self):
+        self.file_window.destroy()
 
     #run frame section
-    def run_status_bar(self, target_window):        
+    def run_status_bar(self, target_window): 
+        trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()       
         self.status_frame = tk.Frame(target_window, bg=self.primary_color)
         self.primary_color_widgets.append(self.status_frame)
 
@@ -65,9 +69,9 @@ class FileView:
         self.status_frame.columnconfigure(2, weight=1)
         self.status_frame.columnconfigure(3, weight=1)
 
-        self.home_button = tk.Button(self.status_frame, text="Home", font=('Arial', 18), 
-                                     command=lambda: print("gi go home"), bg='white', fg='black')
-        self.file_name_label = tk.Label(self.status_frame, text="still need a name", font=('Arial', 18), wraplength=400, bg="white",
+        self.home_button = tk.Button(self.status_frame, text="Close", font=('Arial', 18), 
+                                     command=self.close, bg='white', fg='black')
+        self.file_name_label = tk.Label(self.status_frame, text=trimmed_name, font=('Arial', 18), wraplength=400, bg="white",
                                          fg="black")
         self.view_file_button = tk.Button(self.status_frame, text="View file", font=('Arial', 18),
                                           command=self.show_view, bg="white", fg="black")
@@ -138,11 +142,12 @@ class FileView:
     def get_input(self, event = 1):
         self.user_input = self.input_text.get('1.0', tk.END).strip()  # Capture input
         self.input_text.delete('0.0', tk.END)  # Clear the input field
-        #self.display_output(GUI.user_input)
+        self.display_output(self.user_input)
         IO.input_ready_event.set()
         return "break"
     
-    def toggle_run(self, trimmed_name, errors = False):
+    def toggle_run(self, errors = False):
+        trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()
         if self.run_status == 0:
             self.display_output(f"Running file {trimmed_name}")
             self.run_status = 1
@@ -157,13 +162,12 @@ class FileView:
             self.run_button.config(state=tk.NORMAL)
             
     def run_file(self):
-        self.toggle_run('no file')
+        self.toggle_run()
         def process_file():
             try:
                 memory = Memory()
                 ReadFile.read_file_to_memory(memory, self.file_path)
                 Processor.process(memory, self)
-                print("I made it!")
             except AttributeError:
                 self.display_error("no file selected")
                 self.toggle_run(True)

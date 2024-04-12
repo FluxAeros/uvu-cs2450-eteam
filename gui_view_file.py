@@ -2,18 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, filedialog
 import re
 
-
-class EditView:
-
-    def __init__(self, frame):
-        self.view_frame = frame
-    
-    def init_view_frame(self):
-        self.view_to_run_button = tk.Button(self.view_frame, text="View Button", command=self.show_run)
-        self.view_to_run_button.pack()
-
-
-def view_file(self):
+def view_file(view_frame):
     def check_file():
         lines = self.file_content.get(1.0, "end-1c").split("\n")
         regex = r'^[+-]\d{1,4}$'

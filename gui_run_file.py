@@ -39,9 +39,9 @@ class RunView:
 
     def init_view_frame(self):
         #create the view frame
-        self.view_frame = tk.Frame(self.file_window, bg="light blue")
-        self.view_to_run_button = tk.Button(self.view_frame, text="View Button", command=self.show_run)
-        self.view_to_run_button.pack()
+        self.view_frame = tk.Frame(self.file_window, bg=self.gui.primary_color)
+        self.gui.primary_color_widgets.append(self.view_frame)
+        self.view_status_bar(self.view_frame)
 
     def show_view(self):
         self.view_frame.pack(expand=True, fill=tk.BOTH)
@@ -186,3 +186,34 @@ class RunView:
 
         processing_thread = threading.Thread(target=process_file)
         processing_thread.start()
+
+    def view_status_bar(self, target_window): 
+        trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()       
+        self.status_frame = tk.Frame(target_window, bg=self.gui.widget_bg)
+
+        #use column structure for placing elements
+        self.status_frame.columnconfigure(0, weight=1)
+        self.status_frame.columnconfigure(1, weight=6)
+        self.status_frame.columnconfigure(2, weight=1)
+        self.status_frame.columnconfigure(3, weight=1)
+
+        self.home_button = tk.Button(self.status_frame, text="Close Window", font=('Arial', 18), bg=self.gui.button_bg,
+                                     command=self.close)
+        self.file_name_label = tk.Label(self.status_frame, text=f'Editing: {trimmed_name}', font=('Arial', 18), wraplength=400, bg=self.gui.widget_bg,
+                                         fg=self.gui.widget_fg)
+        self.view_file_button = tk.Button(self.status_frame, text="Cancel", font=('Arial', 18), bg=self.gui.button_bg,
+                                          command=self.show_run)
+        self.run_button = tk.Button(self.status_frame, text="Save", font=('Arial', 18), command=self.save_file,
+                                     bg=self.gui.secondary_color, foreground=self.gui.highlight_button_fg)
+        self.gui.secondary_color_widgets.append(self.run_button)
+
+        #place each element onto grid
+        self.home_button.grid(row=0, column=0, sticky=tk.W+tk.E, padx=5, pady=5)
+        self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
+        self.view_file_button.grid(row=0, column=2, sticky=tk.W+tk.E, padx=5, pady=5)
+        self.run_button.grid(row=0, column=3, sticky=tk.W+tk.E, padx=5, pady=5)
+
+        self.status_frame.pack(fill='x', padx=10, pady=10)
+
+    def save_file(self):
+        pass

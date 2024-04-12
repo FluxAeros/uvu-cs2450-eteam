@@ -7,7 +7,7 @@ class IO:
     @staticmethod
     def read(memory, index, GUI):
         IO.input_ready_event.clear()
-        GUI.display_output("Enter number in format +/-0000:")
+        GUI.display_output("Enter number in format +/-000000:")
         IO.input_ready_event.wait()
         in_num = GUI.user_input
         try:
@@ -15,7 +15,7 @@ class IO:
         except ValueError:
             GUI.display_error("Input must be a number")
             raise ValueError("Input must be a number")
-        if (in_num < -9999 or in_num > 9999):
+        if (in_num < -999999 or in_num > 999999):
             GUI.display_error("Number is too large")
             raise ValueError("Number is too large")
 
@@ -25,4 +25,4 @@ class IO:
 
     @staticmethod
     def write(memory, index, GUI):
-        GUI.display_output("Output: " + str(memory.get_main_memory(index)).zfill(4))
+        GUI.display_output("Output: " + str(memory.get_main_memory(index)).zfill(6))

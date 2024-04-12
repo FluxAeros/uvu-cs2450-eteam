@@ -19,7 +19,6 @@ from color_config import read_config, save_config
 from gui_run_file import RunView
 
 class GUI:
-    from gui_view_file import view_file
 
     def __init__(self):
 
@@ -27,6 +26,10 @@ class GUI:
         saved_colors = read_config()
         self.primary_color = saved_colors[0]
         self.secondary_color = saved_colors[1]
+        self.widget_bg = 'gray20'
+        self.widget_fg = 'gray90'
+        self.button_bg = "gray70"
+        self.highlight_button_fg = 'white'
         self.primary_color_widgets = []
         self.secondary_color_widgets = []
         
@@ -57,55 +60,56 @@ class GUI:
             file_name = f'Selected file: {trimmed_name}'
             new_file_view = RunView(self, file_path)
 
-        else:
-            trimmed_name = 'NO FILE'
-            self.file_name_label.config(text = f'Select a file to start')
-            self.display_error("no file selected")
-            self.view_file_button.config(state = 'disabled')
-
     def init_select_file(self):
-        self.status_frame = tk.Frame(self.root, bg='white')
-        self.select_file_label = tk.Label(self.status_frame, text='Select a file to start', font=('Arial', 18), wraplength=400, bg="white",
-                                         fg="black")
+        self.status_frame = tk.Frame(self.root, bg=self.widget_bg)
+        self.select_file_label = tk.Label(self.status_frame, text='Welcome to UVSIM! Select a file to start', font=('Arial', 20), bg=self.widget_bg,
+                                         fg=self.widget_fg)
         
         self.select_file_button = tk.Button(self.status_frame, text="Select file", font=('Arial', 18),
-                                          command=self.get_file, background=self.secondary_color)
+                                          command=self.get_file, background=self.secondary_color, fg=self.highlight_button_fg)
         self.secondary_color_widgets.append(self.select_file_button)
         
-        self.select_file_label.pack()
-        self.select_file_button.pack()
+        self.select_file_label.pack(anchor='w', padx=5, pady=5)
+        self.select_file_button.pack(anchor='w', padx=5, pady=5)
         self.status_frame.pack(fill='x', padx=10, pady=10)
 
     def init_color_menu(self):
 
-        self.color_menu_frame = tk.Frame(self.root, bg='white')
+        self.color_menu_frame = tk.Frame(self.root, bg=self.widget_bg)
+        self.color_label = tk.Label(self.color_menu_frame, text='Color Options:', font=('Arial', 16), wraplength=400, bg=self.widget_bg,
+                                         fg=self.widget_fg, anchor='w')
+        self.color_label.grid(row=0, column=0, sticky=tk.W + tk.E, padx=5, pady=5)
         self.color_menu_frame.columnconfigure(0, weight=1)
         self.color_menu_frame.columnconfigure(1, weight=1)
+        self.color_menu_frame.columnconfigure(2, weight=20)
 
-        self.dark_mode_button = tk.Button(self.color_menu_frame, text="Dark Mode", font=('Arial'),
-                                                  command=self.toggle_dark_mode, background="gray70")
         self.reset_colors_button = tk.Button(self.color_menu_frame, text="Reset", font=('Arial'),
-                                                  command=self.reset_colors, background="gray70")
-        self.change_main_color_button = tk.Button(self.color_menu_frame, text="Change main color", font=('Arial'),
-                                                  command=self.change_main_color, background="gray70")
-        self.change_secondary_color_button = tk.Button(self.color_menu_frame, text="Change secondary color", font=('Arial'),
-                                                       command=self.change_secondary_color, background="gray70")
+                                                  command=self.reset_colors, background=self.button_bg)
+        self.change_main_color_button = tk.Button(self.color_menu_frame, text="Background Color", font=('Arial'),
+                                                  command=self.change_main_color, background=self.button_bg)
+        self.change_secondary_color_button = tk.Button(self.color_menu_frame, text="Button Color", font=('Arial'),
+                                                       command=self.change_secondary_color, background=self.button_bg)
         
-        self.dark_mode_button.grid(row=0, column=0, sticky=tk.W + tk.E, padx=5, pady=5)
-        self.reset_colors_button.grid(row=0, column=1, sticky=tk.W + tk.E, padx=5, pady=5)
         self.change_main_color_button.grid(row=1, column=0, sticky=tk.W + tk.E, padx=5, pady=5)
         self.change_secondary_color_button.grid(row=1, column=1, sticky=tk.W + tk.E, padx=5, pady=5)
+        self.reset_colors_button.grid(row=2, column=0, sticky=tk.W + tk.E, padx=5, pady=5)
 
-        self.color_menu_frame.pack()
+        self.color_menu_frame.pack(fill=tk.X, padx=10, pady=5)
 
-    def toggle_dark_mode(self):
-        pass
-    
     def reset_colors(self):
-        pass
+        default_primary = '#FFFFFF'
+        default_secondary = '#4C721D'
+        self.primary_color = default_primary
+        self.secondary_color = default_secondary
+        for widget in self.primary_color_widgets:
+                widget.configure(bg=self.primary_color)
+        for widget in self.secondary_color_widgets:
+                widget.configure(bg=self.secondary_color)
+        save_config(self.primary_color, self.secondary_color)
+        self.root.update_idletasks()
     
     def change_main_color(self):
-        color_info = colorchooser.askcolor(title="Choose color")
+        color_info = colorchooser.askcolor(title="Choose BG Color")
         if color_info[1]:
             self.primary_color = color_info[1]
             for widget in self.primary_color_widgets:

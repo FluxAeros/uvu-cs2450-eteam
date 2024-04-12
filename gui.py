@@ -1,6 +1,9 @@
 #gui will be updated to only perform its core responsibilities
 #gui home is responsible for selecting a valid file and changing colors now, everything else goes
 
+#gui will be updated to only perform its core responsibilities
+#gui home is responsible for selecting a valid file and changing colors now, everything else goes
+
 import re
 import threading
 import tkinter as tk
@@ -47,6 +50,7 @@ class GUI:
     def get_file(self, new_path = False):
         if new_path == False:
             file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+            file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
         else:
             file_path = new_path
         if file_path != '':
@@ -55,6 +59,7 @@ class GUI:
             new_file_view = RunView(self, file_path)
 
         else:
+            trimmed_name = 'NO FILE'
             trimmed_name = 'NO FILE'
             self.file_name_label.config(text = f'Select a file to start')
             self.display_error("no file selected")

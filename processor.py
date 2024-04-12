@@ -14,7 +14,7 @@ class Processor:
 
             instruction = memory.get_main_memory(program_counter)
             operationCode = int(str(instruction)[:2])
-            index = int(str(instruction)[-2:])
+            index = int(str(instruction)[-4:])
 
             match operationCode:
                 case 10:

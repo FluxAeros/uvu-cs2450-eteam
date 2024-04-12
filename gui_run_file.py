@@ -24,6 +24,9 @@ class RunView:
         self.file_window = tk.Toplevel(self.gui.root)
         self.file_window.geometry("800x500")
         
+        self.primary_color_widgets = []
+        self.secondary_color_widgets = []
+
         self.init_run_frame()
         self.init_view_frame()
 
@@ -33,6 +36,7 @@ class RunView:
         # Create the run frame with a green background
         self.run_frame = tk.Frame(self.file_window, bg=self.gui.primary_color)
         self.gui.primary_color_widgets.append(self.run_frame)
+        self.primary_color_widgets.append(self.run_frame)
         self.run_status_bar(self.run_frame)
         self.output_console(self.run_frame)
         self.init_input(self.run_frame)
@@ -41,7 +45,9 @@ class RunView:
         #create the view frame
         self.view_frame = tk.Frame(self.file_window, bg=self.gui.primary_color)
         self.gui.primary_color_widgets.append(self.view_frame)
+        self.primary_color_widgets.append(self.view_frame)
         self.view_status_bar(self.view_frame)
+        self.view_text_editor(self.view_frame)
 
     def show_view(self):
         self.view_frame.pack(expand=True, fill=tk.BOTH)
@@ -52,6 +58,10 @@ class RunView:
         self.view_frame.pack_forget()
     
     def close(self):
+        for item in self.primary_color_widgets:
+            self.gui.primary_color_widgets.remove(item)
+        for item in self.secondary_color_widgets:
+            self.gui.secondary_color_widgets.remove(item)
         self.file_window.destroy()
 
     #run frame section
@@ -65,7 +75,7 @@ class RunView:
         self.status_frame.columnconfigure(2, weight=1)
         self.status_frame.columnconfigure(3, weight=1)
 
-        self.home_button = tk.Button(self.status_frame, text="Close", font=('Arial', 18), bg=self.gui.button_bg,
+        self.close_button = tk.Button(self.status_frame, text="Close", font=('Arial', 18), bg=self.gui.button_bg,
                                      command=self.close)
         self.file_name_label = tk.Label(self.status_frame, text=trimmed_name, font=('Arial', 18), wraplength=400, bg=self.gui.widget_bg,
                                          fg=self.gui.widget_fg)
@@ -74,9 +84,10 @@ class RunView:
         self.run_button = tk.Button(self.status_frame, text="Run", font=('Arial', 18), command=self.run_file,
                                      bg=self.gui.secondary_color, foreground=self.gui.highlight_button_fg)
         self.gui.secondary_color_widgets.append(self.run_button)
+        self.secondary_color_widgets.append(self.run_button)
 
         #place each element onto grid
-        self.home_button.grid(row=0, column=0, sticky=tk.W+tk.E, padx=5, pady=5)
+        self.close_button.grid(row=0, column=0, sticky=tk.W+tk.E, padx=5, pady=5)
         self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
         self.view_file_button.grid(row=0, column=2, sticky=tk.W+tk.E, padx=5, pady=5)
         self.run_button.grid(row=0, column=3, sticky=tk.W+tk.E, padx=5, pady=5)
@@ -197,23 +208,85 @@ class RunView:
         self.status_frame.columnconfigure(2, weight=1)
         self.status_frame.columnconfigure(3, weight=1)
 
-        self.home_button = tk.Button(self.status_frame, text="Close Window", font=('Arial', 18), bg=self.gui.button_bg,
+        self.close_window_button = tk.Button(self.status_frame, text="Close Window", font=('Arial', 18), bg=self.gui.button_bg,
                                      command=self.close)
-        self.file_name_label = tk.Label(self.status_frame, text=f'Editing: {trimmed_name}', font=('Arial', 18), wraplength=400, bg=self.gui.widget_bg,
+        self.edit_file_name_label = tk.Label(self.status_frame, text=f'Editing: {trimmed_name}', font=('Arial', 18), wraplength=400, bg=self.gui.widget_bg,
                                          fg=self.gui.widget_fg)
-        self.view_file_button = tk.Button(self.status_frame, text="Cancel", font=('Arial', 18), bg=self.gui.button_bg,
+        self.cancel_button = tk.Button(self.status_frame, text="Cancel", font=('Arial', 18), bg=self.gui.button_bg,
                                           command=self.show_run)
-        self.run_button = tk.Button(self.status_frame, text="Save", font=('Arial', 18), command=self.save_file,
+        self.save_button = tk.Button(self.status_frame, text="Save", font=('Arial', 18), command=self.save_file,
                                      bg=self.gui.secondary_color, foreground=self.gui.highlight_button_fg)
-        self.gui.secondary_color_widgets.append(self.run_button)
+        self.gui.secondary_color_widgets.append(self.save_button)
+        self.secondary_color_widgets.append(self.save_button)
 
         #place each element onto grid
-        self.home_button.grid(row=0, column=0, sticky=tk.W+tk.E, padx=5, pady=5)
-        self.file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
-        self.view_file_button.grid(row=0, column=2, sticky=tk.W+tk.E, padx=5, pady=5)
-        self.run_button.grid(row=0, column=3, sticky=tk.W+tk.E, padx=5, pady=5)
+        self.close_window_button.grid(row=0, column=0, sticky=tk.W+tk.E, padx=5, pady=5)
+        self.edit_file_name_label.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
+        self.cancel_button.grid(row=0, column=2, sticky=tk.W+tk.E, padx=5, pady=5)
+        self.save_button.grid(row=0, column=3, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.status_frame.pack(fill='x', padx=10, pady=10)
 
+    def check_file(self):
+        lines = self.file_content.get(1.0, "end-1c").split("\n")
+        regex = r'^[+-]\d{1,4}$'
+        i = 1
+        for line in lines:
+            line = line.strip()
+            if bool(re.match(regex, line)) == True:
+                pass
+            else:
+                messagebox.showerror("Error", 'SyntaxError: Line {}, "{}"'.format(i, line))
+                return False
+            i+=1
+        return True
+
     def save_file(self):
-        pass
+        status = self.check_file()
+        if status == True:
+            new_file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+            if new_file_path:
+                lines = self.file_content.get(1.0, "end-1c").split("\n")
+                self.file_path = new_file_path
+                f = open(self.file_path, "w")
+                for i in range(len(lines)):
+                    f.write(lines[i])
+                    if (i+1) != len(lines):
+                        f.write("\n")
+
+
+                #update file name headers
+                trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group() 
+                self.file_name_label.config(text=trimmed_name)
+                self.edit_file_name_label.config(text=trimmed_name)
+                self.file_window.update_idletasks()
+                self.show_run()
+                f.close()
+                messagebox.showinfo("File", "File saved")
+            else:
+                print("error getting save filepath")
+        elif status == False:
+            print("save aborted: syntax error")
+    
+    def check_250(self, event):
+        lines = self.file_content.get(1.0, "end-1c").split("\n")
+        if len(lines) > 250:
+            messagebox.showerror("Error", 'Cannot exceed 250 lines')
+            self.file_content.delete('251.0', 'end')
+            return 'break'
+
+    def view_text_editor(self, target_window):
+        self.text_edit_frame = tk.Frame(target_window, bg=self.gui.widget_bg)
+        self.file_content = tk.Text(self.text_edit_frame,height='110', highlightthickness=5, highlightbackground = self.gui.widget_bg, highlightcolor=self.gui.widget_bg)
+        self.file_content.pack(fill=tk.BOTH, expand=True)
+        
+        self.file_content.bind("<Key>", self.check_250)
+        try:
+            with open(self.file_path, 'r') as f:
+                self.file_content.insert(tk.END, f.read())
+        except FileNotFoundError:
+            self.file_content.insert(tk.END, "File not found")
+        except Exception as e:
+            self.file_content.insert(tk.END, f"An error occurred: {str(e)}")
+
+        self.text_edit_frame.pack(fill='x', padx=10, pady=10)

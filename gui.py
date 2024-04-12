@@ -19,7 +19,6 @@ from color_config import read_config, save_config
 from gui_run_file import RunView
 
 class GUI:
-    from gui_view_file import view_file
 
     def __init__(self):
 

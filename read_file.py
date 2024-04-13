@@ -5,28 +5,40 @@ from memory import Memory
 class ReadFile:
     def read_file_to_memory(memory_obj, file_path):
         try:
-            with open(f'{file_path}', 'r') as file:
+            with open(f'{file_path}', 'r+') as file:
                 index = 0
                 convert = False
-                checkedConvert = False
+                checked_convert = False
+                converted_file = []
 
                 for command in file:
-                    if(len(re.sub("[^0-9]", "", command)) == 4 and checkedConvert == False):
+                    if(len(re.sub("[^0-9]", "", command)) == 4 and checked_convert == False):
                         convert = messagebox.askyesno("Old File Conversion", "This file is in the old format of four digit words. Would you like to convert to the new six digit format?")
-                        checkedConvert = True
+                        checked_convert = True
                     break
 
                 for command in file:
                     if (len(re.sub("[^0-9]", "", command)) == 4):
                         if (convert):
-                            command = str(command).zfill(6)
+                            numerical_command = re.sub("[^0-9]", "", command)
+                            sign = command[0]
+                            if (numerical_command[:2] in (10, 11, 20, 21, 30, 31, 32, 33, 40, 41, 42, 43)):
+                                numerical_command = "0" + numerical_command[:2] + "0" + numerical_command[2:]
+                            else:
+                                numerical_command = "00" + numerical_command
+                            command = sign + numerical_command
                         memory_obj.set_main_memory(index, int(command))
+                        converted_file.append(command)
                         index += 1
                     elif (len(re.sub("[^0-9]", "", command)) == 6):
                         memory_obj.set_main_memory(index, int(command))
                         index += 1
                     else:
                         raise ValueError("Invalid command")
+                if (convert):
+                    file.truncate(0)
+                    for command in converted_file:
+                        file.write(" ".join(command) + "\n")
         except FileNotFoundError:
             raise FileNotFoundError("File not found")
 

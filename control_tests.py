@@ -14,7 +14,7 @@ class TestControlMethods(unittest.TestCase):
 
     def test_branch_index_error(self):
         memory = Memory()
-        index = 100
+        index = 251
         
         with self.assertRaises(IndexError):
             Control.branch(memory, index)
@@ -38,7 +38,7 @@ class TestControlMethods(unittest.TestCase):
 
     def test_branch_neg_index_error(self):
         memory = Memory()
-        index = 100
+        index = 251
         memory.set_accumulator(-74)
 
         with self.assertRaises(IndexError):
@@ -61,7 +61,7 @@ class TestControlMethods(unittest.TestCase):
 
     def test_branch_zero_index_error(self):
         memory = Memory()
-        index = 100
+        index = 251
         
         with self.assertRaises(IndexError):
             Control.branch_zero(memory, index)

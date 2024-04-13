@@ -66,8 +66,8 @@ class TestArithmetic(unittest.TestCase):
     def test_index_error(self):
         memory = Memory()
         with self.assertRaises(IndexError):
-            Arithmetic.add(memory, 100)  # Testing with a non-existent memory index
-            Arithmetic.subtract(memory, 100)
+            Arithmetic.add(memory, 251)  # Testing with a non-existent memory index
+            Arithmetic.subtract(memory, 251)
 
 if __name__ == '__main__':
     unittest.main()

@@ -16,7 +16,7 @@ class TestLoadStoreMethods(unittest.TestCase):
         memory = Memory()
 
         with self.assertRaises(IndexError):
-            LoadStore.load(memory, 100)
+            LoadStore.load(memory, 251)
 
     def test_store(self):
         memory = Memory()
@@ -30,7 +30,7 @@ class TestLoadStoreMethods(unittest.TestCase):
         memory = Memory()
 
         with self.assertRaises(IndexError):
-            LoadStore.store(memory, 100)
+            LoadStore.store(memory, 251)
 
 if __name__ == '__main__':
     unittest.main()

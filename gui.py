@@ -94,7 +94,7 @@ class GUI:
         self.change_secondary_color_button.grid(row=1, column=1, sticky=tk.W + tk.E, padx=5, pady=5)
         self.reset_colors_button.grid(row=2, column=0, sticky=tk.W + tk.E, padx=5, pady=5)
 
-        self.color_menu_frame.pack(fill=tk.X, padx=10, pady=5)
+        self.color_menu_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
 
     def reset_colors(self):
         default_primary = '#FFFFFF'
@@ -113,7 +113,10 @@ class GUI:
         if color_info[1]:
             self.primary_color = color_info[1]
             for widget in self.primary_color_widgets:
-                widget.configure(bg=self.primary_color)
+                try:
+                    widget.configure(bg=self.primary_color)
+                except:
+                    self.primary_color_widgets.remove(widget)
             save_config(self.primary_color, self.secondary_color)
             self.root.update_idletasks()
 
@@ -122,6 +125,9 @@ class GUI:
         if color_info[1]:
             self.secondary_color = color_info[1]
             for widget in self.secondary_color_widgets:
-                widget.configure(bg=self.secondary_color)
+                try:
+                    widget.configure(bg=self.secondary_color)
+                except:
+                    self.secondary_color_widgets.remove(widget)
             save_config(self.primary_color, self.secondary_color)
             self.root.update_idletasks()

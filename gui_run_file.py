@@ -128,7 +128,8 @@ class RunView:
         self.curr_line = 1
         self.o_font_size = 15
         self.labels = []
-        self.display_output("Please select a file")
+        trimmed_name = (re.search("([^\\/]+)$", self.file_path)).group()
+        self.display_output("Run or view file {}".format(trimmed_name))
 
     def init_input(self, target_frame):
         self.input_frame = tk.Frame(target_frame, bg=self.gui.widget_bg)
@@ -229,17 +230,32 @@ class RunView:
 
     def check_file(self):
         lines = self.file_content.get(1.0, "end-1c").split("\n")
-        regex = r'^[+-]\d{1,4}$'
+        regex_4 = r'^[+-]\d{4}$'
+        regex_6 = r'^[+-]\d{6}$'
         i = 1
-        for line in lines:
-            line = line.strip()
-            if bool(re.match(regex, line)) == True:
-                pass
-            else:
-                messagebox.showerror("Error", 'SyntaxError: Line {}, "{}"'.format(i, line))
-                return False
-            i+=1
-        return True
+        if bool(re.match(regex_4, lines[0])) == True:
+            for line in lines:
+                line = line.strip()
+                if bool(re.match(regex_4, line)) == True:
+                    pass
+                else:
+                    messagebox.showerror("Error", 'SyntaxError: Line {}, "{}"'.format(i, line))
+                    return False
+                i+=1
+            return True
+        elif bool(re.match(regex_6, lines[0])) == True:
+            for line in lines:
+                line = line.strip()
+                if bool(re.match(regex_6, line)) == True:
+                    pass
+                else:
+                    messagebox.showerror("Error", 'SyntaxError: Line {}, "{}"'.format(i, line))
+                    return False
+                i+=1
+            return True
+        else:
+            messagebox.showerror("Error", 'SyntaxError')
+            return False
 
     def save_file(self):
         status = self.check_file()
@@ -289,4 +305,4 @@ class RunView:
         except Exception as e:
             self.file_content.insert(tk.END, f"An error occurred: {str(e)}")
 
-        self.text_edit_frame.pack(fill='x', padx=10, pady=10)
+        self.text_edit_frame.pack(fill='x', padx=10, pady=(0, 10))

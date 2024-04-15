@@ -1,25 +1,29 @@
 from memory import Memory
-import threading
+import time
 
 class IO:
 
-    input_ready_event = threading.Event()
     @staticmethod
     def read(memory, index, GUI):
-        IO.input_ready_event.clear()
         GUI.display_output("Enter number in format +/-000000:")
-        IO.input_ready_event.wait()
-        in_num = GUI.user_input
+
+        GUI.prime_input()
+
+        input = GUI.get_input()
+        while input == False:
+            time.sleep(0.1)
+            input = GUI.get_input()
+
         try:
-            in_num = int(in_num)
+            input = int(input)
         except ValueError:
             GUI.display_error("Input must be a number")
             raise ValueError("Input must be a number")
-        if (in_num < -999999 or in_num > 999999):
+        if (input < -999999 or input > 999999):
             GUI.display_error("Number is too large")
             raise ValueError("Number is too large")
 
-        memory.set_main_memory(index, in_num)
+        memory.set_main_memory(index, input)
 
 
 

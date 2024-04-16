@@ -20,6 +20,10 @@ class RunView:
         self.gui = gui
         self.file_path = file_path
         self.run_status = 0
+
+        self.input_ready = False
+        self.accept_input = False
+        self.current_input = 'DEFAULT NO VALUE YET'
     
         self.file_window = tk.Toplevel(self.gui.root)
         self.file_window.geometry("800x500")
@@ -138,19 +142,36 @@ class RunView:
 
         self.input_text = tk.Text(self.input_frame, height='2',font=('Arial', 16), background="gray70")
         self.input_text.grid(row=0, column=0, padx=5, pady=5)
-        self.input_text.bind("<Return>", self.get_input)
+        self.input_text.bind("<Return>", self.btn_input_press)
 
         self.input_button = tk.Button(self.input_frame, text="Enter", font=('Arial', 18),
-                                      command=self.get_input, background=self.gui.button_bg)
+                                      command=self.btn_input_press, background=self.gui.button_bg)
         self.input_button.grid(row=0, column=1, sticky=tk.W+tk.E, padx=5, pady=5)
 
         self.input_frame.pack(fill='x', padx=10, pady=10)
     
-    def get_input(self, event = 1):
-        self.user_input = self.input_text.get('1.0', tk.END).strip()  # Capture input
-        self.input_text.delete('0.0', tk.END)  # Clear the input field
-        self.display_output(self.user_input)
-        IO.input_ready_event.set()
+    def prime_input(self):
+        self.accept_input = True
+        #print(f"{self}now accepting input")
+
+    def get_input(self):
+        if self.input_ready == True:
+            self.input_ready = False
+            return self.current_input
+        else:
+            return False
+    
+    def btn_input_press(self, event = 1):
+        input = self.input_text.get('1.0', tk.END).strip()  # Capture input
+        self.input_text.delete('0.0', tk.END)  # Clear the input field\
+        if self.accept_input == True:
+            self.accept_input = False
+            self.current_input = input
+            self.display_output(self.current_input)
+            #print(f"{self}: input received {input}")
+            self.input_ready = True
+        else:
+            self.display_output("input not accepted at this time")
         return "break"
     
     def toggle_run(self, errors = False):

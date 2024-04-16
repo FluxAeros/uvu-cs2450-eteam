@@ -26,7 +26,7 @@ class ReadFile:
                             else:
                                 numerical_command = "00" + numerical_command
                             command = sign + numerical_command
-                            converted_file.append(command)
+                            converted_file.append(command + "\n")
                         else:
                             memory_obj.set_main_memory(index, int(command))
                             index += 1
@@ -39,7 +39,7 @@ class ReadFile:
                         else:
                             numerical_command = "00" + numerical_command
                         command = sign + numerical_command
-                        converted_file.append(command)
+                        converted_file.append(command + "\n")
                         memory_obj.set_main_memory(index, int(command))
                         index += 1
                     elif(len(re.sub("[^0-9]", "", command)) == 4 and convert == False):

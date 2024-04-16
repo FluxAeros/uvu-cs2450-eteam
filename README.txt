@@ -34,16 +34,14 @@ your terminal or command prompt, assuming you are in the UVSim project directory
 3. Load Your Program File:
 Once UVSim opens, click on the "Select file" button.
 Navigate through the file dialog to find and select the program file you prepared in step 1.
+Note: UVSim can edit and run multiple program files simultaneously.
 
 4. Execute the Program:
 Click the "Run" button to start the simulation.
 UVSim will process the file and display output information within its window.
 
 5. Input Codes as Prompted:
-If UVSim requires additional input during execution, enter the codes when prompted. Inputs should be in the format of +0000 for positive numbers or -0000 for negative numbers, where 0000 represents your numeric value.
-
-6. Completion and Restart:
-After the program finishes execution, UVSim will be ready for another run. You can choose to load another file and repeat the process as desired.
+If UVSim requires additional input during execution, enter the codes when prompted. Inputs should be in the format of +000000 for positive numbers or -000000 for negative numbers, where 000000 represents your numeric value.
 
 ---Additional Features---
 1. Viewing/Editing Files:

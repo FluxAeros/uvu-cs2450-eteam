@@ -1,13 +1,15 @@
 import re
 from tkinter import messagebox
 from memory import Memory
+from tkinter.filedialog import asksaveasfile
+import os
 
 class ReadFile:
     def read_file_to_memory(memory_obj, file_path):
+        convert = False
         try:
             with open(f'{file_path}', 'r+') as file:
                 index = 0
-                convert = False
                 checked_convert = False
                 converted_file = []
 
@@ -24,7 +26,7 @@ class ReadFile:
                             else:
                                 numerical_command = "00" + numerical_command
                             command = sign + numerical_command
-                            converted_file.append(command)
+                            converted_file.append(command + "\n")
                         else:
                             memory_obj.set_main_memory(index, int(command))
                             index += 1
@@ -37,7 +39,7 @@ class ReadFile:
                         else:
                             numerical_command = "00" + numerical_command
                         command = sign + numerical_command
-                        converted_file.append(command)
+                        converted_file.append(command + "\n")
                         memory_obj.set_main_memory(index, int(command))
                         index += 1
                     elif(len(re.sub("[^0-9]", "", command)) == 4 and convert == False):
@@ -48,14 +50,15 @@ class ReadFile:
                         index += 1
                     else:
                         raise ValueError("Invalid command")
-                if (convert):
-                    file.close()
-                    with open(file_path, 'w') as file:
-                        for i, command in enumerate(converted_file):
-                            if i < len(converted_file) - 1:
-                                file.write("".join(command) + "\n")
-                            else:
-                                file.write("".join(command))
+                if convert:
+                    initial_filename = os.path.basename(file_path)
+                    file_to_save = asksaveasfile(mode='w', defaultextension=".txt",
+                                                 initialfile=initial_filename,
+                                                 title="Save the converted file")
+                    if file_to_save:
+                        file_to_save.write("".join(converted_file))
+                        file_to_save.close()
+
         except FileNotFoundError:
             raise FileNotFoundError("File not found")
 

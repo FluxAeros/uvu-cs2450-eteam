@@ -61,6 +61,9 @@ class RunView:
         self.run_frame.pack(expand=True, fill=tk.BOTH)
         self.view_frame.pack_forget()
     
+    def on_closing(self):
+        self.close()
+
     def close(self):
         for item in self.primary_color_widgets:
             self.gui.primary_color_widgets.remove(item)

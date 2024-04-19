@@ -102,9 +102,15 @@ class GUI:
         self.primary_color = default_primary
         self.secondary_color = default_secondary
         for widget in self.primary_color_widgets:
-                widget.configure(bg=self.primary_color)
+                try:
+                    widget.configure(bg=self.primary_color)
+                except:
+                    self.primary_color_widgets.remove(widget)
         for widget in self.secondary_color_widgets:
-                widget.configure(bg=self.secondary_color)
+                try:
+                    widget.configure(bg=self.secondary_color)
+                except:
+                    self.secondary_color_widgets.remove(widget)
         save_config(self.primary_color, self.secondary_color)
         self.root.update_idletasks()
     

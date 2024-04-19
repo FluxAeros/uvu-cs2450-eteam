@@ -230,7 +230,7 @@ class RunView:
         self.status_frame.columnconfigure(2, weight=1)
         self.status_frame.columnconfigure(3, weight=1)
 
-        self.close_window_button = tk.Button(self.status_frame, text="Close Window", font=('Arial', 18), bg=self.gui.button_bg,
+        self.close_window_button = tk.Button(self.status_frame, text="Close", font=('Arial', 18), bg=self.gui.button_bg,
                                      command=self.close)
         self.edit_file_name_label = tk.Label(self.status_frame, text=f'Editing: {trimmed_name}', font=('Arial', 18), wraplength=400, bg=self.gui.widget_bg,
                                          fg=self.gui.widget_fg)
